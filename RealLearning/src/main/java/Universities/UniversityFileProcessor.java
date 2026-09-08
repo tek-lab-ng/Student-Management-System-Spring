@@ -46,7 +46,7 @@ public final class UniversityFileProcessor {
 
         Student st = new Student(parseOrThrow(inputParam[0]),
                 inputParam[1], parseOrThrow(inputParam[2]),
-                inputParam[3], inputParam[4], inputParam[5]);
+                inputParam[3], parseOrThrow(inputParam[4]), inputParam[5], parseOrThrow(inputParam[6]));
 
         return st;
     }

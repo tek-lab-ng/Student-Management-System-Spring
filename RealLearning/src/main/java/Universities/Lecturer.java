@@ -8,7 +8,7 @@ public class Lecturer extends LibraryMember implements Payable{
     private String department;
     private int salary;
 
-    public Lecturer(int id, String name, int age, String department, String libraryCardNumber, String email, int salary) {
+    public Lecturer(int id, String name, int age, String department, int libraryCardNumber, String email, int salary) {
         super(id, name, age, libraryCardNumber, email);
         this.department = department;
         this.salary = salary;

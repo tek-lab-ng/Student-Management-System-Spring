@@ -86,12 +86,12 @@ public class Revised {
 
         University people = new University();
 
-        Student s1 = new Student(1, "Gabriel", 25, "Computer Science", "010", "gabrieljames85@gmail.com" );
+        Student s1 = new Student(1, "Gabriel", 25, "Computer Science", 010, "gabrieljames85@gmail.com", 0 );
 
-        Student s2 = new Student(2, "Jayden", 21, "Chemistry", "011", "jayden@gmail.com" );
+        Student s2 = new Student(2, "Jayden", 21, "Chemistry", 011, "jayden@gmail.com", 0 );
 
-        Lecturer l1 = new Lecturer(3, "Fred", 40, "Computer Science", "012", "fred@gmail.com", 10000);
-        Lecturer l2 = new Lecturer(4, "Lucy", 45, "Physics", "012", "Lucy@gmail.com", 20000);
+        Lecturer l1 = new Lecturer(3, "Fred", 40, "Computer Science", 012, "fred@gmail.com", 10000);
+        Lecturer l2 = new Lecturer(4, "Lucy", 45, "Physics", 012, "Lucy@gmail.com", 20000);
 
         Security sec1 = new Security(5, "Mike", 28, "Mike@gmail.com", 1, 200000);
         Security sec2 = new Security(6, "Ben", 29, "Ben@gmail.com", 2, 20000);

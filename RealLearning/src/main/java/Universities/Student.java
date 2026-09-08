@@ -6,7 +6,7 @@ public class Student extends LibraryMember {
     private String course;
     private String grade;
 
-    Student(int id, String name, int age, String course, String libraryCardNumber, String email){
+    Student(int id, String name, int age, String course, int libraryCardNumber, String email, int grade){
         super(id, name, age, libraryCardNumber, email);
         this.course = course;
     }
@@ -30,4 +30,16 @@ public class Student extends LibraryMember {
                 + " and I study " + getCourse());
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id ='" + getId() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", age='" + getAge() + '\'' +
+                ", course='" + getCourse() + '\'' +
+                ", library_card ='" + getLibraryCardNumber() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", grade='" + getGrade() + '\'' +
+                '}';
+    }
 }

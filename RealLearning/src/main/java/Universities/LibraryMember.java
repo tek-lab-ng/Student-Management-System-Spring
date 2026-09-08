@@ -3,18 +3,18 @@ package Universities;
 //This is the Library Faculty class
 abstract class  LibraryMember  extends Person{
 
-    private String libraryCardNumber;
+    private int libraryCardNumber;
 
-    public LibraryMember(int id, String name, int age, String libraryCardNumber, String email) {
+    public LibraryMember(int id, String name, int age, int libraryCardNumber, String email) {
         super(id, name, age, email);
         this.libraryCardNumber = libraryCardNumber;
     }
 
-    public String getLibraryCardNumber() {
+    public int getLibraryCardNumber() {
         return libraryCardNumber;
     }
 
-    public void setLibraryCardNumber(String libraryCardNumber) {
+    public void setLibraryCardNumber(int libraryCardNumber) {
         this.libraryCardNumber = libraryCardNumber;
     }
 }

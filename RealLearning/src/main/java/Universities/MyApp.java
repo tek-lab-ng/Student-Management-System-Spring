@@ -13,14 +13,15 @@ public class MyApp {
 
     public static void main(String[] args)  {
 
+        /**
         University people = new University();
 
-        Student s1 = new Student(1, "Gabriel", 25, "Computer Science", "010", "gabrieljames85@gmail.com" );
+        Student s1 = new Student(1, "Gabriel", 25, "Computer Science", 010, "gabrieljames85@gmail.com", 0 );
 
-        Student s2 = new Student(2, "Jayden", 21, "Chemistry", "011", "jayden@gmail.com" );
+        Student s2 = new Student(2, "Jayden", 21, "Chemistry", 011, "jayden@gmail.com", 0 );
 
-        Lecturer l1 = new Lecturer(3, "Fred", 40, "Computer Science", "012", "fred@gmail.com", 700000);
-        Lecturer l2 = new Lecturer(4, "Lucy", 45, "Physics", "012", "Lucy@gmail.com", 700000);
+        Lecturer l1 = new Lecturer(3, "Fred", 40, "Computer Science", 012, "fred@gmail.com", 700000);
+        Lecturer l2 = new Lecturer(4, "Lucy", 45, "Physics", 012, "Lucy@gmail.com", 700000);
 
         Security sec1 = new Security(5, "Mike", 28, "Mike@gmail.com", 1, 200000);
         Security sec2 = new Security(6, "Ben", 29, "Ben@gmail.com", 2, 200000);
@@ -78,13 +79,14 @@ public class MyApp {
         people.removePerson(1);
         System.out.println(people.getPerson().stream().map(n->n.getName()).toList());
 
-        System.out.println("This are the lecturers in the university " + people.displayLecturers().stream().map(n->n.getName()).toList());
+        System.out.println("This are the lecturers in the university " + people.displayLecturers().stream().map(Person::getName).toList());
 
         //Implemented the Interface Payable and filtered the class that implemented it
         Payable payable = l1;
         System.out.println("The salary of this lecture l1 is: " + payable.calculatePay());
 
 
+        System.out.println("Checking the list of the payables");
         List<Payable> payables = new ArrayList<>(people.getPerson().stream().filter(persons -> persons instanceof Payable).map(persons -> (Payable) persons).toList());
 //        payables.addAll(people.getPerson().stream().filter(persons -> persons instanceof Janitor).map(persons-> (Janitor) persons).toList());
 //        payables.addAll(people.getPerson().stream().filter(persons -> persons instanceof Security).map(persons-> (Security) persons).toList());
@@ -152,7 +154,7 @@ public class MyApp {
             Predicate<Student> predicate1 = (Student s) -> Integer.parseInt(s.getGrade()) >= 50;
 
             //Filter student with grades above 50
-            List<String> withGradeAbove = result.stream().filter(st -> predicate1.test(st)).map(st -> st.getName()).toList();
+            List<String> withGradeAbove = result.stream().filter(predicate1).map(st -> st.getName()).toList();
 
             System.out.println("The list of student with grade above 50 are: " + withGradeAbove);
 
@@ -183,7 +185,7 @@ public class MyApp {
                     "Highest Grade Student: "  + highest.get().getName() + "  \n" +
                     "Highest Grade:  " + highest.get().getGrade() + "  \n" +
 
-                    "Lowest Grade Student: "  + lowest.get().getGrade() + " \n" +
+                    "Lowest Grade Student: "  + lowest.get().getName() + " \n" +
                     "Lowest Grade:  " + lowest.get().getGrade() + "  \n" +
 
                     "Computer Science Students:  " + compStudent +  " \n" +
@@ -191,9 +193,21 @@ public class MyApp {
                     "========================================"
             );
 
+         **/
+
+//        StudentDao.getAllStudents().forEach(Student::introduce);
+
 
 
     }
 
 
+    public void displayStudentById(int id){
+        Student student = StudentDao.getStudentById(id);
+
+        if(student != null)
+            System.out.println(student);
+        else
+            System.out.println("No Student found with that ID");
+    }
 }
