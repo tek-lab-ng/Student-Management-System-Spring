@@ -35,7 +35,7 @@ public class Lecturer extends LibraryMember implements Payable{
     public static void assignGrade(Student s){
         Scanner in = new Scanner(System.in);
         System.out.print("Kindly enter the grade for the student selected: " + s.getName() + "  ");
-        s.setGrade(in.next());
+        s.setGrade(in.nextInt());
         System.out.println("The name of student with grade:  " + s.getName() +"  " + s.getGrade());
     }
 

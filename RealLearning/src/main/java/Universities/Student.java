@@ -4,11 +4,18 @@ package Universities;
 public class Student extends LibraryMember {
 
     private String course;
-    private String grade;
+    private int grade;
 
     Student(int id, String name, int age, String course, int libraryCardNumber, String email, int grade){
         super(id, name, age, libraryCardNumber, email);
         this.course = course;
+        this.grade = grade;
+    }
+
+    Student(String name, int age, String course, int libraryCardNumber, String email, int grade){
+        super(name, age, libraryCardNumber, email);
+        this.course = course;
+        this.grade = grade;
     }
 
     public String getCourse() {
@@ -19,10 +26,10 @@ public class Student extends LibraryMember {
         this.course = course;
     }
 
-    public void setGrade(String grade){
+    public void setGrade(int grade){
         this.grade = grade;
     }
-    public String getGrade(){return grade;}
+    public int getGrade(){return grade;}
 
     @Override
     public void introduce() {

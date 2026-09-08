@@ -22,7 +22,7 @@ public final class StudentDao {
             while (resultSet.next()) {
                 Student st = new Student(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getInt("age"),
                          resultSet.getString("course"), resultSet.getInt("library_card_number"),resultSet.getString("email"),
-                        + resultSet.getInt("grade"));
+                         resultSet.getInt("grade"));
 
                 allStudent.add(st);
             }
@@ -64,8 +64,7 @@ public final class StudentDao {
 
             if (resultSet.next())
                 return new Student(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getInt("age"),
-                                    resultSet.getString("course"), resultSet.getInt("library_card_number"), resultSet.getString("email"),
-                                    resultSet.getInt("grade"));
+                                    resultSet.getString("course"), resultSet.getInt("library_card_number"), resultSet.getString("email"), resultSet.getInt("grade"));
             else
                 System.out.println("Student with that id: " + id + " not found");
 
@@ -88,5 +87,46 @@ public final class StudentDao {
             }
         }
         return null;
+    }
+
+    public static void addStudent(Student st){
+        Connection con = null;
+        String sql;
+        PreparedStatement ptmt = null;
+
+
+        try {
+            con = DatabaseConnection.getConnection();
+            sql = "Insert into Students (name, age, email, course, grade, library_card_number) Values (?,?,?,?,?,?)";
+            ptmt = con.prepareStatement(sql);
+            ptmt.setString(1, st.getName());
+            ptmt.setInt(2, st.getAge());
+            ptmt.setString(3, st.getEmail());
+            ptmt.setString(4, st.getCourse());
+            ptmt.setInt(5, st.getGrade());
+            ptmt.setInt(6, st.getLibraryCardNumber());
+
+            int info = ptmt.executeUpdate();
+            if (info > 0)
+                System.out.println("The new entry successfully added");
+            else
+                System.out.println("Something not right with the values");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+
+                if (con != null)
+                    con.close();
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
     }
 }

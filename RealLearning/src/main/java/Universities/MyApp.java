@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 public class MyApp {
 
+    private static final StudentService studentService = new StudentService();
+
     public static void main(String[] args)  {
 
         /**
@@ -195,7 +197,12 @@ public class MyApp {
 
          **/
 
-//        StudentDao.getAllStudents().forEach(Student::introduce);
+//
+
+
+        Student st = new Student("Joachim", 40, "Computer Science",107,"joachim@gmail.com", 75);
+
+        studentService.getAllStudents().forEach(n -> System.out.println(n));
 
 
 
@@ -203,11 +210,15 @@ public class MyApp {
 
 
     public void displayStudentById(int id){
-        Student student = StudentDao.getStudentById(id);
+        Student student = studentService.getStudentById(id);
 
         if(student != null)
             System.out.println(student);
         else
             System.out.println("No Student found with that ID");
+    }
+
+    public void createNewStudent(Student st){
+        studentService.addStudent(st);
     }
 }
