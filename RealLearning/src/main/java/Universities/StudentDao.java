@@ -110,7 +110,7 @@ public final class StudentDao {
             if (info > 0)
                 System.out.println("The new entry successfully added");
             else
-                System.out.println("Something not right with the values");
+                System.out.println("Student with name " + st.getName() + " not added");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -123,6 +123,94 @@ public final class StudentDao {
                 if (con != null)
                     con.close();
 
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+    }
+
+
+    public static void updateGrade(int id, int grade){
+        Connection con = null;
+        String sql;
+        PreparedStatement ptmt = null;
+
+        try {
+            con = DatabaseConnection.getConnection();
+            sql = "Update Students Set grade = ? where id = ?";
+            ptmt = con.prepareStatement(sql);
+
+            ptmt.setInt(1, grade);
+            ptmt.setInt(2, id);
+
+            int outcome = ptmt.executeUpdate();
+            if (outcome > 0)
+                System.out.println("The student Grade with studentID " + id + " successfully updated");
+            else
+                System.out.println("No studentID " + id + " with this found");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+
+                if (con != null)
+                    con.close();
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public static void deleteStudent(int id){
+        Connection con = null;
+        String sql;
+        PreparedStatement ptmt = null;
+
+        try {
+            con = DatabaseConnection.getConnection();
+            sql = "Delete from Students where id = ?";
+            con.setAutoCommit(false);
+            ptmt = con.prepareStatement(sql);
+            ptmt.setInt(1, id);
+
+            int outcome = ptmt.executeUpdate();
+
+            if(outcome > 0) {
+                con.commit();
+                System.out.println("Student successfully deleted");
+            } else {
+                con.setAutoCommit(true);
+                System.out.println("Not successful");
+            }
+
+        } catch (SQLException e) {
+            if(con != null){
+
+                try{
+                    con.rollback();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
+            throw new RuntimeException(e);
+        }finally {
+            try {
+
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+
+                if (con != null) {
+                    con.setAutoCommit(true);
+                    con.close();
+                }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }

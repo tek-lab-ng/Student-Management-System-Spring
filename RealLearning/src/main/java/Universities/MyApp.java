@@ -1,6 +1,8 @@
 package Universities;
 
 
+import Employees.Employee;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -202,9 +204,16 @@ public class MyApp {
 
         Student st = new Student("Joachim", 40, "Computer Science",107,"joachim@gmail.com", 75);
 
-        studentService.getAllStudents().forEach(n -> System.out.println(n));
+        studentService.addStudent(st);
+       studentService.getAllStudents().forEach(n -> System.out.println(n));
+//
+        System.out.println(" ");
 
+        System.out.println(studentService.getStudentById(9));
 
+        //System.out.println(" ");
+
+        //  studentService.deleteStudent(9);
 
     }
 
