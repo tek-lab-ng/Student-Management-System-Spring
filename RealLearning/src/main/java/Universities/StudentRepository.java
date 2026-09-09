@@ -495,7 +495,7 @@ public class StudentRepository {
             con = DatabaseConnection.getConnection();
             sql = "Select id, name, age, course, library_card_number, email from Students where course Like ?";
             ptmt = con.prepareStatement(sql);
-            ptmt.setString(1, course + "%" );
+            ptmt.setString(1, "%" + course + "%" );
             resultSet = ptmt.executeQuery();
 
             while (resultSet.next()) {

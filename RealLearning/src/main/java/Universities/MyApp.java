@@ -197,16 +197,13 @@ public class MyApp {
                     "========================================"
             );
 
-         **/
 
-//
 
 
         Student st = new Student("Joachim", 40, "Computer Science",107,"joachim@gmail.com", 75);
 
         studentService.addStudent(st);
        studentService.getAllStudents().forEach(n -> System.out.println(n));
-//
         System.out.println(" ");
 
         System.out.println(studentService.getStudentById(9));
@@ -215,6 +212,18 @@ public class MyApp {
 
         //  studentService.deleteStudent(9);
 
+
+        List<Student> studentByMinGrade = studentService.getStudentsByMinimumGrade(70);
+        if(!studentByMinGrade.isEmpty()) {
+            for (Student student : studentByMinGrade) {
+                System.out.println(student);
+            }
+        } else
+            System.out.println("No student found for this course!!!");
+
+         **/
+         Student st = studentService.getStudentWithHighestScore();
+         System.out.println(st);
     }
 
 

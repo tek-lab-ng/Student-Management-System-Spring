@@ -217,4 +217,92 @@ public final class StudentDao {
         }
 
     }
+
+    public static List<Student> findStudentByCourse(String course){
+        Connection con = null;
+        String sql;
+        PreparedStatement ptmt = null;
+        ResultSet resultSet = null;
+
+        List<Student> returnedStudent = new ArrayList<>();
+
+
+        try {
+            con = DatabaseConnection.getConnection();
+            sql = "Select id, name, age, course, library_card_number, email, grade from Students where course Like ?";
+            ptmt = con.prepareStatement(sql);
+            ptmt.setString(1, "%" + course + "%" );
+            resultSet = ptmt.executeQuery();
+
+            while (resultSet.next()) {
+                returnedStudent.add(new Student(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getInt("age"),
+                        resultSet.getString("course"), resultSet.getInt("library_card_number"),
+                        resultSet.getString("email"), resultSet.getInt("grade")));
+            }
+
+            return returnedStudent;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+
+                if (con != null)
+                    con.close();
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public static List<Student> findStudentsByMinimumGrade(int minimumGrade){
+        Connection con = null;
+        String sql;
+        PreparedStatement ptmt = null;
+        ResultSet resultSet = null;
+
+        List<Student> returnedStudent = new ArrayList<>();
+
+
+        try {
+            con = DatabaseConnection.getConnection();
+            sql = "Select id, name, age, course, library_card_number, email, grade from Students where grade >= ?";
+            ptmt = con.prepareStatement(sql);
+            ptmt.setInt(1, minimumGrade);
+            resultSet = ptmt.executeQuery();
+
+            while (resultSet.next()) {
+                returnedStudent.add(new Student(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getInt("age"),
+                        resultSet.getString("course"), resultSet.getInt("library_card_number"),
+                        resultSet.getString("email"), resultSet.getInt("grade")));
+            }
+
+            return returnedStudent;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (ptmt != null) {
+                    ptmt.close();
+                }
+
+                if (con != null)
+                    con.close();
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 }
