@@ -236,7 +236,7 @@ public class MyApp {
             System.out.println("No Student found with that ID");
     }
 
-    public void createNewStudent(Student st){
-        studentService.addStudent(st);
-    }
+//    public void createNewStudent(Student st){
+//        studentService.addStudent(st);
+//    }
 }

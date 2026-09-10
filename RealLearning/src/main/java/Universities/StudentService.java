@@ -1,5 +1,7 @@
 package Universities;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -12,12 +14,14 @@ public class StudentService {
         return StudentDao.getStudentById(id);
     }
 
-    public void addStudent(Student st){
-        StudentDao.addStudent(st);
+    public void addStudent(Student st) throws SQLException {
+        Connection connection = DatabaseConnection.getConnection();
+        StudentDao.addStudent(connection, st);
     }
 
-    public void updateStudent(int id , int grade){
-        StudentDao.updateGrade(id, grade);
+    public void updateStudent(int id , int grade) throws SQLException {
+            Connection connection = DatabaseConnection.getConnection();
+            StudentDao.updateGrade(connection, id, grade);
     }
 
     public void deleteStudent(int id){

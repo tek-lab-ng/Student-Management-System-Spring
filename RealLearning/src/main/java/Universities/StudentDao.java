@@ -89,14 +89,13 @@ public final class StudentDao {
         return null;
     }
 
-    public static void addStudent(Student st){
-        Connection con = null;
+    public static void addStudent(Connection con, Student st){
         String sql;
         PreparedStatement ptmt = null;
 
 
         try {
-            con = DatabaseConnection.getConnection();
+
             sql = "Insert into Students (name, age, email, course, grade, library_card_number) Values (?,?,?,?,?,?)";
             ptmt = con.prepareStatement(sql);
             ptmt.setString(1, st.getName());
@@ -120,9 +119,6 @@ public final class StudentDao {
                     ptmt.close();
                 }
 
-                if (con != null)
-                    con.close();
-
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
@@ -131,13 +127,11 @@ public final class StudentDao {
     }
 
 
-    public static void updateGrade(int id, int grade){
-        Connection con = null;
+    public static void updateGrade(Connection con, int id, int grade){
         String sql;
         PreparedStatement ptmt = null;
 
         try {
-            con = DatabaseConnection.getConnection();
             sql = "Update Students Set grade = ? where id = ?";
             ptmt = con.prepareStatement(sql);
 
@@ -157,9 +151,6 @@ public final class StudentDao {
                 if (ptmt != null) {
                     ptmt.close();
                 }
-
-                if (con != null)
-                    con.close();
 
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
