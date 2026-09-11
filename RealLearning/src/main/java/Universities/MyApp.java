@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -222,8 +223,10 @@ public class MyApp {
             System.out.println("No student found for this course!!!");
 
          **/
-         Student st = studentService.getStudentWithHighestScore();
-         System.out.println(st);
+//         Student st = studentService.getStudentWithHighestScore();
+//         System.out.println(st);
+//
+
     }
 
 

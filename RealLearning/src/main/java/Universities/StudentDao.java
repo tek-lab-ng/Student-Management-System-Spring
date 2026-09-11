@@ -89,15 +89,15 @@ public final class StudentDao {
         return null;
     }
 
-    public static void addStudent(Connection con, Student st){
+    public static boolean addStudent(Connection con, Student st) throws SQLException{
         String sql;
         PreparedStatement ptmt = null;
-
+        ResultSet resultSet = null;
 
         try {
 
             sql = "Insert into Students (name, age, email, course, grade, library_card_number) Values (?,?,?,?,?,?)";
-            ptmt = con.prepareStatement(sql);
+            ptmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ptmt.setString(1, st.getName());
             ptmt.setInt(2, st.getAge());
             ptmt.setString(3, st.getEmail());
@@ -106,15 +106,32 @@ public final class StudentDao {
             ptmt.setInt(6, st.getLibraryCardNumber());
 
             int info = ptmt.executeUpdate();
-            if (info > 0)
-                System.out.println("The new entry successfully added");
-            else
-                System.out.println("Student with name " + st.getName() + " not added");
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
+            if (info > 0) {
+                if(resultSet.next()) {
+                    resultSet = ptmt.getGeneratedKeys();
+                    int id = resultSet.getInt(1);
+                    st.setId(id);
+                    System.out.println("The new entry successfully added");
+                    System.out.println("My returned id: " + id);
+                    return true;
+                } else {
+                    System.out.println("The student id was not returned!!!");
+                    return false;
+                }
+            }
+            else{
+                System.out.println("Student with name " + st.getName() + " not added");
+                return false;
+            }
+
+        }  finally {
             try {
+
+                if (resultSet != null){
+                    resultSet.close();
+                }
+
                 if (ptmt != null) {
                     ptmt.close();
                 }
@@ -127,7 +144,7 @@ public final class StudentDao {
     }
 
 
-    public static void updateGrade(Connection con, int id, int grade){
+    public static boolean updateGrade(Connection con, int id, int grade) throws SQLException{
         String sql;
         PreparedStatement ptmt = null;
 
@@ -139,14 +156,16 @@ public final class StudentDao {
             ptmt.setInt(2, id);
 
             int outcome = ptmt.executeUpdate();
-            if (outcome > 0)
+            if (outcome > 0) {
                 System.out.println("The student Grade with studentID " + id + " successfully updated");
-            else
+                return true;
+            }
+            else {
                 System.out.println("No studentID " + id + " with this found");
+                return false;
+            }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
+        }  finally {
             try {
                 if (ptmt != null) {
                     ptmt.close();
@@ -202,6 +221,8 @@ public final class StudentDao {
                     con.setAutoCommit(true);
                     con.close();
                 }
+
+
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }

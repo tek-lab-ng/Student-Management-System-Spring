@@ -43,4 +43,30 @@ public class StudentService {
         return st;
 
     }
+
+    public void addStudentAndUpdateGrade(Student student, int id, int grade) {
+
+        try (Connection con = DatabaseConnection.getConnection()){
+
+            try  {
+                    con.setAutoCommit(false);
+                if (StudentDao.addStudent(con, student) && StudentDao.updateGrade(con, student.getId(), grade)) {
+                    con.commit();
+                } else {
+                    con.rollback();
+                }
+
+            } catch (SQLException e) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+                throw new RuntimeException(e);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
