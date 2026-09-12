@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Predicate;
@@ -14,9 +15,9 @@ import java.util.stream.Collectors;
 
 public class MyApp {
 
-    private static final StudentService studentService = new StudentService();
+    private  static final StudentService studentService = new StudentService();
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws SQLException {
 
         /**
         University people = new University();
@@ -225,7 +226,16 @@ public class MyApp {
          **/
 //         Student st = studentService.getStudentWithHighestScore();
 //         System.out.println(st);
+
+        Student st1 = new Student(99, "sweet", 23, "Biochemistry", 1205, "Vero@gmail.com", 90);
+//       studentService.addStudentAndUpdateGrade(st1, 30, 92);
 //
+//       boolean value = StudentDao.addStudent(con, st1) && StudentDao.updateGrade(con, 99, 100);
+//        System.out.println("Print " + value);
+
+
+//
+
 
     }
 

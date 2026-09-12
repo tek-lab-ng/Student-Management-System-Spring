@@ -108,12 +108,12 @@ public final class StudentDao {
             int info = ptmt.executeUpdate();
 
             if (info > 0) {
+                resultSet = ptmt.getGeneratedKeys();
                 if(resultSet.next()) {
-                    resultSet = ptmt.getGeneratedKeys();
                     int id = resultSet.getInt(1);
                     st.setId(id);
                     System.out.println("The new entry successfully added");
-                    System.out.println("My returned id: " + id);
+//                    System.out.println("My returned id: " + id);
                     return true;
                 } else {
                     System.out.println("The student id was not returned!!!");

@@ -44,7 +44,7 @@ public class StudentService {
 
     }
 
-    public void addStudentAndUpdateGrade(Student student, int id, int grade) {
+    public void addStudentAndUpdateGrade(Student student, int grade) {
 
         try (Connection con = DatabaseConnection.getConnection()){
 
@@ -53,11 +53,13 @@ public class StudentService {
                 if (StudentDao.addStudent(con, student) && StudentDao.updateGrade(con, student.getId(), grade)) {
                     con.commit();
                 } else {
+                    System.out.println("Rolling back because condition failed");
                     con.rollback();
                 }
 
             } catch (SQLException e) {
                 try {
+                    System.out.println("Rolling back, as their are errors");
                     con.rollback();
                 } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
