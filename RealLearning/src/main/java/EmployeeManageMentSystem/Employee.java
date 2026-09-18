@@ -1,4 +1,0 @@
-package EmployeeManageMentSystem;
-
-class Employee {
-}
