@@ -232,13 +232,13 @@ public class MyApp {
 //
 //       boolean value = StudentDao.addStudent(con, st1) && StudentDao.updateGrade(con, 99, 100);
 //        System.out.println("Print " + value);
+//        studentService.updateBothStudent(1, 100, 30, 100);
+        studentService.updateThreeStudent(1, 98, 2, 97, 35, 96);
 
-
-//
 
 
     }
-
+/** This point tested that we are able to use the student service is working and student is supplying the required details..
 
     public void displayStudentById(int id){
         Student student = studentService.getStudentById(id);
@@ -249,7 +249,9 @@ public class MyApp {
             System.out.println("No Student found with that ID");
     }
 
-//    public void createNewStudent(Student st){
-//        studentService.addStudent(st);
-//    }
+    public void createNewStudent(Student st){
+        studentService.addStudent(st);
+    }
+
+ **/
 }

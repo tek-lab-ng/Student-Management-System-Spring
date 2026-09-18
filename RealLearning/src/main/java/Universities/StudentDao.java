@@ -89,7 +89,7 @@ public final class StudentDao {
         return null;
     }
 
-    public static boolean addStudent(Connection con, Student st) throws SQLException{
+    public static boolean addStudent(Connection con, Student st) {
         String sql;
         PreparedStatement ptmt = null;
         ResultSet resultSet = null;
@@ -109,7 +109,7 @@ public final class StudentDao {
 
             if (info > 0) {
                 resultSet = ptmt.getGeneratedKeys();
-                if(resultSet.next()) {
+                if (resultSet.next()) {
                     int id = resultSet.getInt(1);
                     st.setId(id);
                     System.out.println("The new entry successfully added");
@@ -119,13 +119,15 @@ public final class StudentDao {
                     System.out.println("The student id was not returned!!!");
                     return false;
                 }
-            }
-            else{
+            } else {
                 System.out.println("Student with name " + st.getName() + " not added");
                 return false;
             }
 
-        }  finally {
+        } catch (SQLException e){
+            throw  new RuntimeException(e);
+
+          }finally {
             try {
 
                 if (resultSet != null){
