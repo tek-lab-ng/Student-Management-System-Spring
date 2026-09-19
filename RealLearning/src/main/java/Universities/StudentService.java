@@ -1,11 +1,14 @@
 package Universities;
 
 
+import org.springframework.stereotype.Service;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 
+@Service
 public class StudentService {
     public List<Student> getAllStudents(){
         return StudentDao.getAllStudents();
@@ -24,17 +27,22 @@ public class StudentService {
         }
     }
 
-    public void updateStudent(int id , int grade) {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            StudentDao.updateGrade(connection, id, grade);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public Student updateStudent(int id , int grade) {
+
+        try(Connection connection = DatabaseConnection.getConnection()) {
+
+            int result = StudentDao.updateGrade(connection, id, grade);
+            if (result > 0)
+                return getStudentById(id);
+        }catch (SQLException e){
+            throw new RuntimeException();
         }
+        return null;
     }
 
-    public void deleteStudent(int id){
-        StudentDao.deleteStudent(id);
+    public boolean deleteStudent(int id){
+       int outcome = StudentDao.deleteStudent(id);
+       return outcome > 0;
     }
 
     public List<Student> getStudentByCourse(String course){
@@ -52,7 +60,7 @@ public class StudentService {
         return st;
 
     }
-
+/**
     public void addStudentAndUpdateGrade(Student student, int grade) {
 
         try (Connection con = DatabaseConnection.getConnection()){
@@ -129,5 +137,6 @@ public class StudentService {
             throw new RuntimeException(e);
         }
     }
+ **/
 
 }

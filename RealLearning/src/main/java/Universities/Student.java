@@ -6,16 +6,20 @@ public class Student extends LibraryMember {
     private String course;
     private int grade;
 
-    Student(int id, String name, int age, String course, int libraryCardNumber, String email, int grade){
+    public Student(int id, String name, int age, String course, int libraryCardNumber, String email, int grade){
         super(id, name, age, libraryCardNumber, email);
         this.course = course;
         this.grade = grade;
     }
 
-    Student(String name, int age, String course, int libraryCardNumber, String email, int grade){
+    public Student(String name, int age, String course, int libraryCardNumber, String email, int grade){
         super(name, age, libraryCardNumber, email);
         this.course = course;
         this.grade = grade;
+    }
+
+    public Student(){
+        super();
     }
 
     public String getCourse() {

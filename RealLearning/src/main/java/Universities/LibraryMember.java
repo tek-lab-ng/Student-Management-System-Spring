@@ -15,6 +15,10 @@ abstract class  LibraryMember  extends Person{
         this.libraryCardNumber = libraryCardNumber;
     }
 
+    public LibraryMember() {
+        super();
+    }
+
     public int getLibraryCardNumber() {
         return libraryCardNumber;
     }

@@ -146,7 +146,7 @@ public final class StudentDao {
     }
 
 
-    public static boolean updateGrade(Connection con, int id, int grade) throws SQLException{
+    public static int updateGrade(Connection con, int id, int grade){
         String sql;
         PreparedStatement ptmt = null;
 
@@ -158,16 +158,12 @@ public final class StudentDao {
             ptmt.setInt(2, id);
 
             int outcome = ptmt.executeUpdate();
-            if (outcome > 0) {
-                System.out.println("The student Grade with studentID " + id + " successfully updated");
-                return true;
-            }
-            else {
-                System.out.println("No studentID " + id + " with this found");
-                return false;
-            }
 
-        }  finally {
+            return outcome;
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }finally {
             try {
                 if (ptmt != null) {
                     ptmt.close();
@@ -179,7 +175,7 @@ public final class StudentDao {
         }
     }
 
-    public static void deleteStudent(int id){
+    public static int deleteStudent(int id){
         Connection con = null;
         String sql;
         PreparedStatement ptmt = null;
@@ -187,29 +183,14 @@ public final class StudentDao {
         try {
             con = DatabaseConnection.getConnection();
             sql = "Delete from Students where id = ?";
-            con.setAutoCommit(false);
             ptmt = con.prepareStatement(sql);
             ptmt.setInt(1, id);
 
             int outcome = ptmt.executeUpdate();
 
-            if(outcome > 0) {
-                con.commit();
-                System.out.println("Student successfully deleted");
-            } else {
-                con.setAutoCommit(true);
-                System.out.println("Not successful");
-            }
+            return outcome;
 
         } catch (SQLException e) {
-            if(con != null){
-
-                try{
-                    con.rollback();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
 
             throw new RuntimeException(e);
         }finally {
@@ -220,7 +201,6 @@ public final class StudentDao {
                 }
 
                 if (con != null) {
-                    con.setAutoCommit(true);
                     con.close();
                 }
 
