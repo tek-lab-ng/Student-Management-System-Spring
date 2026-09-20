@@ -58,4 +58,13 @@ public class StudentController {
 
     }
 
+    @PutMapping("/{pathid}")
+    public ResponseEntity<?> updateStudentProfile(@RequestBody Student student, @PathVariable int pathid){
+        Student st = studentService.updateStudentProfile(student, pathid);
+        if(st != null)
+            return ResponseEntity.status(HttpStatus.OK).body(new StudentUpdateProfile(st, "Student profile successfully updated"));
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with that id not found");
+    }
+
 }

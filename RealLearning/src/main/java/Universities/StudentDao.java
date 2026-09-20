@@ -255,6 +255,28 @@ public final class StudentDao {
             }
         }
     }
+    public static Student updateStudentProfile(Connection con, Student student, int pathID){
+        String sql = "Update students set name = ? , age = ? , email = ?, course = ?, grade = ?, library_card_number = ? where id = ?";
+        try(PreparedStatement ptmt = con.prepareStatement(sql)){
+
+            ptmt.setString(1, student.getName());
+            ptmt.setInt(2, student.getAge());
+            ptmt.setString(3, student.getEmail());
+            ptmt.setString(4, student.getCourse());
+            ptmt.setInt(5, student.getGrade());
+            ptmt.setInt(6, student.getLibraryCardNumber());
+            ptmt.setInt(7, pathID);
+
+            if(ptmt.executeUpdate() > 0)
+                return student;
+            else
+                return null;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     public static List<Student> findStudentsByMinimumGrade(int minimumGrade){
         Connection con = null;
@@ -298,5 +320,8 @@ public final class StudentDao {
                 System.out.println(e.getMessage());
             }
         }
+
+
+
     }
 }

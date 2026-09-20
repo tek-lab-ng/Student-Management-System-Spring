@@ -60,6 +60,17 @@ public class StudentService {
         return st;
 
     }
+
+
+    public Student updateStudentProfile(Student student, int pathid){
+        try(Connection con = DatabaseConnection.getConnection()){
+
+            return StudentDao.updateStudentProfile(con, student, pathid);
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 /**
     public void addStudentAndUpdateGrade(Student student, int grade) {
 
@@ -138,5 +149,6 @@ public class StudentService {
         }
     }
  **/
+
 
 }
