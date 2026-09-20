@@ -39,8 +39,8 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateStudent(@PathVariable int id, @RequestBody int grade){
-         Student student = studentService.updateStudent(id, grade);
+    public ResponseEntity<?> updateStudent(@PathVariable int id, @RequestBody StudentGradeRequest stg){
+         Student student = studentService.updateStudent(id, stg.getGrade());
          if(student != null)
              return ResponseEntity.ok(student);
          else
