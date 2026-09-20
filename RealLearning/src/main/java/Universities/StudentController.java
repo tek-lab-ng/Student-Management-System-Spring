@@ -1,5 +1,6 @@
 package Universities;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateStudent(@PathVariable int id, @RequestBody StudentGradeRequest stg){
+    public ResponseEntity<?> updateStudent(@PathVariable int id, @RequestBody  @Valid StudentGradeRequest stg){
          Student student = studentService.updateStudent(id, stg.getGrade());
          if(student != null)
              return ResponseEntity.ok(student);
