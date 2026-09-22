@@ -1,9 +1,14 @@
-package Universities;
+package Universities.ObjectClass;
+
+
+import Universities.AbstractObject.LibraryMember;
+import Universities.Paymentmember.Payable;
+import Universities.Student;
 
 import java.util.Scanner;
 
 //This is the Lecturer class
-public class Lecturer extends LibraryMember implements Payable{
+public class Lecturer extends LibraryMember implements Payable {
 
     private String department;
     private int salary;

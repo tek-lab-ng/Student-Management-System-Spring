@@ -1,17 +1,29 @@
-package Universities;
+package Universities.AbstractObject;
 
-import java.util.*;
-import java.util.function.Predicate;
+import jakarta.validation.constraints.*;
+import jakarta.persistence.*;
 
 //The University Management Structure
+@MappedSuperclass
 public abstract class Person {
-    private int id;
+    @Id
+    @GeneratedValue
+    private Long id;
+    @NotBlank(message = "name field can not be empty")
+    @Size(min = 4)
+    @Pattern(regexp = "[A-Za-z]+")
+    @Column(name = "name")
     private String name;
+    @Min(16)
+    @Max(50)
+    @Column(name = "age")
     private int age;
+
+    @Email(message = "Please provide a valid email address")
     private String email;
 
 
-    public Person(int id, String name, int age, String email) {
+    public Person(Long id, String name, int age, String email) {
 
             this.id = id;
             this.name = name;
@@ -30,11 +42,11 @@ public abstract class Person {
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

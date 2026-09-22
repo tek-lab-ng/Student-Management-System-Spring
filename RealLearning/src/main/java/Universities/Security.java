@@ -1,7 +1,10 @@
 package Universities;
 
+import Universities.AbstractObject.Person;
+import Universities.Paymentmember.Payable;
+
 //This is the Security class
-class Security extends Person implements Payable{
+class Security extends Person implements Payable {
     private int gateNumber;
     private int salary;
 

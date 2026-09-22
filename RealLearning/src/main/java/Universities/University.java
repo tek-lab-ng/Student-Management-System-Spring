@@ -1,5 +1,11 @@
 package Universities;
 
+import Universities.AbstractObject.Person;
+import Universities.Exceptions.DuplicatePersonIdException;
+import Universities.Exceptions.InvalidAgeException;
+import Universities.Exceptions.InvalidEmailException;
+import Universities.ObjectClass.Lecturer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;

@@ -1,11 +1,15 @@
-package Universities;
+package Universities.AbstractObject;
+
+import jakarta.persistence.Column;
 
 //This is the Library Faculty class
-abstract class  LibraryMember  extends Person{
+public abstract class  LibraryMember  extends Person {
 
+
+    @Column(name="library_card_number")
     private int libraryCardNumber;
 
-    public LibraryMember(int id, String name, int age, int libraryCardNumber, String email) {
+    public LibraryMember(Long id, String name, int age, int libraryCardNumber, String email) {
         super(id, name, age, email);
         this.libraryCardNumber = libraryCardNumber;
     }

@@ -1,4 +1,4 @@
-package Universities;
+package Universities.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

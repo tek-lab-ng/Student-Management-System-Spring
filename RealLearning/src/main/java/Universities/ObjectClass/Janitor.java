@@ -1,7 +1,10 @@
-package Universities;
+package Universities.ObjectClass;
+
+import Universities.AbstractObject.Person;
+import Universities.Paymentmember.Payable;
 
 //This is the Janitor class
-class Janitor extends Person implements Payable{
+class Janitor extends Person implements Payable {
 
     private String cleanArea;
     private int salary;

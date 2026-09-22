@@ -1,6 +1,7 @@
 package Universities;
 
 
+import Universities.DatabaseConnection.DatabaseConnection;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;

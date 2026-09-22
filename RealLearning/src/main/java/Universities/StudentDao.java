@@ -1,5 +1,7 @@
 package Universities;
 
+import Universities.DatabaseConnection.DatabaseConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ public final class StudentDao {
             resultSet = stmt.executeQuery(sql);
 
             while (resultSet.next()) {
-                Student st = new Student(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getInt("age"),
+                Student st = new Student(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getInt("age"),
                          resultSet.getString("course"), resultSet.getInt("library_card_number"),resultSet.getString("email"),
                          resultSet.getInt("grade"));
 
@@ -63,7 +65,7 @@ public final class StudentDao {
             resultSet = ptmt.executeQuery();
 
             if (resultSet.next())
-                return new Student(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getInt("age"),
+                return new Student(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getInt("age"),
                                     resultSet.getString("course"), resultSet.getInt("library_card_number"), resultSet.getString("email"), resultSet.getInt("grade"));
             else
                 System.out.println("Student with that id: " + id + " not found");
@@ -110,7 +112,7 @@ public final class StudentDao {
             if (info > 0) {
                 resultSet = ptmt.getGeneratedKeys();
                 if (resultSet.next()) {
-                    int id = resultSet.getInt(1);
+                    Long id = resultSet.getLong(1);
                     st.setId(id);
                     System.out.println("The new entry successfully added");
 //                    System.out.println("My returned id: " + id);
@@ -229,7 +231,7 @@ public final class StudentDao {
             resultSet = ptmt.executeQuery();
 
             while (resultSet.next()) {
-                returnedStudent.add(new Student(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getInt("age"),
+                returnedStudent.add(new Student(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getInt("age"),
                         resultSet.getString("course"), resultSet.getInt("library_card_number"),
                         resultSet.getString("email"), resultSet.getInt("grade")));
             }
@@ -295,7 +297,7 @@ public final class StudentDao {
             resultSet = ptmt.executeQuery();
 
             while (resultSet.next()) {
-                returnedStudent.add(new Student(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getInt("age"),
+                returnedStudent.add(new Student(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getInt("age"),
                         resultSet.getString("course"), resultSet.getInt("library_card_number"),
                         resultSet.getString("email"), resultSet.getInt("grade")));
             }

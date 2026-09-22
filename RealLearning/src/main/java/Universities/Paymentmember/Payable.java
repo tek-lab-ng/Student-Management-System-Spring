@@ -1,4 +1,4 @@
-package Universities;
+package Universities.Paymentmember;
 
 public interface Payable {
 

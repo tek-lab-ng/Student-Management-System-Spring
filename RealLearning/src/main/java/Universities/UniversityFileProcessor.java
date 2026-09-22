@@ -44,7 +44,7 @@ public final class UniversityFileProcessor {
     public static Student convertToStudent(String record){
        String[] inputParam = record.split(",");
 
-        Student st = new Student(parseOrThrow(inputParam[0]),
+        Student st = new Student(Long.valueOf(inputParam[0]),
                 inputParam[1], parseOrThrow(inputParam[2]),
                 inputParam[3], parseOrThrow(inputParam[4]), inputParam[5], parseOrThrow(inputParam[6]));
 

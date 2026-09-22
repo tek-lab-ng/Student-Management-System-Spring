@@ -1,5 +1,7 @@
 package Universities;
 
+import Universities.DatabaseConnection.DatabaseConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -499,7 +501,7 @@ public class StudentRepository {
             resultSet = ptmt.executeQuery();
 
             while (resultSet.next()) {
-                returnedStudent.add(new Student(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getInt("age"),
+                returnedStudent.add(new Student(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getInt("age"),
                                                 resultSet.getString("course"), resultSet.getInt("library_card_number"),
                                                 resultSet.getString("email"), resultSet.getInt("grade")));
             }
