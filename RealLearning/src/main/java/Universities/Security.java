@@ -8,7 +8,7 @@ class Security extends Person implements Payable {
     private int gateNumber;
     private int salary;
 
-    public Security(int id, String name, int age, String email, int gateNumber, int salary) {
+    public Security(Long id, String name, int age, String email, int gateNumber, int salary) {
         super(id, name, age, email);
         this.gateNumber = gateNumber;
         this.salary = salary;

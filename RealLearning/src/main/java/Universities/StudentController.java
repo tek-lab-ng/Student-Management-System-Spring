@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/students")
@@ -23,9 +24,9 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getStudentByID(@PathVariable int id){
-        Student student = studentService.getStudentById(id);
-        if(student == null){
+    public ResponseEntity<?> getStudentByID(@PathVariable Long id){
+        Optional<Student> student = studentService.getStudentById(id);
+        if(student.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found");
         } else {
            return ResponseEntity.status(HttpStatus.OK).body(student);
@@ -40,9 +41,9 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateStudent(@PathVariable int id, @RequestBody  @Valid StudentGradeRequest stg){
-         Student student = studentService.updateStudent(id, stg.getGrade());
-         if(student != null)
+    public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody  @Valid StudentGradeRequest stg){
+         Optional<Student> student = studentService.updateStudent(id, stg.getGrade());
+         if(student.isPresent())
              return ResponseEntity.ok(student);
          else
              return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

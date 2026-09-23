@@ -148,7 +148,7 @@ public final class StudentDao {
     }
 
 
-    public static int updateGrade(Connection con, int id, int grade){
+    public static int updateGrade(Connection con, Long id, int grade){
         String sql;
         PreparedStatement ptmt = null;
 
@@ -157,7 +157,7 @@ public final class StudentDao {
             ptmt = con.prepareStatement(sql);
 
             ptmt.setInt(1, grade);
-            ptmt.setInt(2, id);
+            ptmt.setLong(2, id);
 
             int outcome = ptmt.executeUpdate();
 

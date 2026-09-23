@@ -2,21 +2,33 @@ package Universities;
 
 
 import Universities.DatabaseConnection.DatabaseConnection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
-    public List<Student> getAllStudents(){
-        return StudentDao.getAllStudents();
+
+
+    private final StudentJpaRepository repository;
+
+    public StudentService(StudentJpaRepository studentJpaRepository){
+        this.repository =  studentJpaRepository;
     }
 
-    public Student getStudentById(int id){
-        return StudentDao.getStudentById(id);
+    public List<Student> getAllStudents(){
+//        return StudentDao.getAllStudents();
+        return repository.findAll();
+    }
+
+    public Optional<Student> getStudentById(Long id){
+//        return StudentDao.getStudentById(id);
+        return repository.findById(id);
     }
 
     public void addStudent(Student st) {
@@ -28,7 +40,7 @@ public class StudentService {
         }
     }
 
-    public Student updateStudent(int id , int grade) {
+    public Optional<Student> updateStudent(Long id , int grade) {
 
         try(Connection connection = DatabaseConnection.getConnection()) {
 

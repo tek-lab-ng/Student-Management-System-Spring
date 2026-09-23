@@ -9,7 +9,7 @@ class Janitor extends Person implements Payable {
     private String cleanArea;
     private int salary;
 
-    public Janitor(int id, String name, int age, String email, String cleanArea, int salary) {
+    public Janitor(Long id, String name, int age, String email, String cleanArea, int salary) {
         super(id, name, age, email);
         this.cleanArea = cleanArea;
         this.salary = salary;
