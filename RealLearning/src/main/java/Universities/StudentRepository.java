@@ -502,7 +502,7 @@ public class StudentRepository {
 
             while (resultSet.next()) {
                 returnedStudent.add(new Student(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getInt("age"),
-                                                resultSet.getString("course"), resultSet.getInt("library_card_number"),
+                                                resultSet.getString("course"), resultSet.getLong("library_card_number"),
                                                 resultSet.getString("email"), resultSet.getInt("grade")));
             }
 

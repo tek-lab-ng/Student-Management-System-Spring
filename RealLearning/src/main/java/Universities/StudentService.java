@@ -1,13 +1,11 @@
 package Universities;
 
 
-import Universities.DatabaseConnection.DatabaseConnection;
-import org.springframework.beans.factory.annotation.Autowired;
+import Universities.DTO.StudentRequest;
+import Universities.Mapper.StudentMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,58 +29,70 @@ public class StudentService {
         return repository.findById(id);
     }
 
-    public void addStudent(Student st) {
-        try {
-            Connection connection = DatabaseConnection.getConnection();
-            StudentDao.addStudent(connection, st);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    @Transactional
+    public Student addStudent(StudentRequest studentRequest) {
+        Student st = StudentMapper.toStudent(studentRequest);
+        st = repository.save(st);
+        st.setLibraryCardNumber(10000 + st.getId());
+
+        return st;
     }
 
     public Optional<Student> updateStudent(Long id , int grade) {
 
-        try(Connection connection = DatabaseConnection.getConnection()) {
+        return repository.findById(id)
+                .map(student -> {
+                    student.setGrade(grade);
+                    return repository.save(student);
+                });
 
-            int result = StudentDao.updateGrade(connection, id, grade);
-            if (result > 0)
-                return getStudentById(id);
-        }catch (SQLException e){
-            throw new RuntimeException();
-        }
-        return null;
     }
 
-    public boolean deleteStudent(int id){
-       int outcome = StudentDao.deleteStudent(id);
-       return outcome > 0;
+    public void deleteStudent(Long id){
+       Optional<Student> student = repository.findById(id);
+        student.ifPresent(repository::delete);
     }
 
     public List<Student> getStudentByCourse(String course){
 
-        return StudentDao.findStudentByCourse(course);
+//        return StudentDao.findStudentByCourse(course);
+        return repository.findByCourse(course);
     }
 
     public List<Student> getStudentsByMinimumGrade(int minimumGrade){
-        return StudentDao.findStudentsByMinimumGrade(minimumGrade);
+//        return StudentDao.findStudentsByMinimumGrade(minimumGrade);
+        return repository.findByGradeGreaterThanEqual(minimumGrade);
     }
 
     public Student getStudentWithHighestScore(){
-        Student st = null;
-        st = getAllStudents().stream().max(Comparator.comparing(Student::getGrade)).orElse(null);
-        return st;
+//        Student st = null;
+//        st = getAllStudents().stream().max(Comparator.comparing(Student::getGrade)).orElse(null);
+//        return st;
+
+        return repository.findTopByOrderByGradeDesc();
 
     }
 
 
-    public Student updateStudentProfile(Student student, int pathid){
-        try(Connection con = DatabaseConnection.getConnection()){
 
-            return StudentDao.updateStudentProfile(con, student, pathid);
+    @Transactional
+    public Student updateStudentProfile(Student student, Long pathid){
+//        try(Connection con = DatabaseConnection.getConnection()){
+//
+//            return StudentDao.updateStudentProfile(con, student, pathid);
+//
+//        } catch (SQLException e){
+//            throw new RuntimeException(e);
+//        }
+        Student existstudent = repository.findById(pathid).orElseThrow();
+        existstudent.setName(student.getName());
+        existstudent.setAge(student.getAge());
+        existstudent.setGrade(student.getGrade());
+        existstudent.setCourse(student.getCourse());
+        existstudent.setLibraryCardNumber(student.getLibraryCardNumber());
+        existstudent.setEmail(student.getEmail());
 
-        } catch (SQLException e){
-            throw new RuntimeException(e);
-        }
+        return existstudent;
     }
 /**
     public void addStudentAndUpdateGrade(Student student, int grade) {

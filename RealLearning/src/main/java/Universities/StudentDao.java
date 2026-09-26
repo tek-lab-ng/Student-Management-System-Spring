@@ -23,7 +23,7 @@ public final class StudentDao {
 
             while (resultSet.next()) {
                 Student st = new Student(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getInt("age"),
-                         resultSet.getString("course"), resultSet.getInt("library_card_number"),resultSet.getString("email"),
+                         resultSet.getString("course"), resultSet.getLong("library_card_number"),resultSet.getString("email"),
                          resultSet.getInt("grade"));
 
                 allStudent.add(st);
@@ -66,7 +66,7 @@ public final class StudentDao {
 
             if (resultSet.next())
                 return new Student(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getInt("age"),
-                                    resultSet.getString("course"), resultSet.getInt("library_card_number"), resultSet.getString("email"), resultSet.getInt("grade"));
+                                    resultSet.getString("course"), resultSet.getLong("library_card_number"), resultSet.getString("email"), resultSet.getInt("grade"));
             else
                 System.out.println("Student with that id: " + id + " not found");
 
@@ -105,7 +105,7 @@ public final class StudentDao {
             ptmt.setString(3, st.getEmail());
             ptmt.setString(4, st.getCourse());
             ptmt.setInt(5, st.getGrade());
-            ptmt.setInt(6, st.getLibraryCardNumber());
+            ptmt.setLong(6, st.getLibraryCardNumber());
 
             int info = ptmt.executeUpdate();
 
@@ -177,7 +177,7 @@ public final class StudentDao {
         }
     }
 
-    public static int deleteStudent(int id){
+    public static int deleteStudent(Long id){
         Connection con = null;
         String sql;
         PreparedStatement ptmt = null;
@@ -186,7 +186,7 @@ public final class StudentDao {
             con = DatabaseConnection.getConnection();
             sql = "Delete from Students where id = ?";
             ptmt = con.prepareStatement(sql);
-            ptmt.setInt(1, id);
+            ptmt.setLong(1, id);
 
             int outcome = ptmt.executeUpdate();
 
@@ -232,7 +232,7 @@ public final class StudentDao {
 
             while (resultSet.next()) {
                 returnedStudent.add(new Student(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getInt("age"),
-                        resultSet.getString("course"), resultSet.getInt("library_card_number"),
+                        resultSet.getString("course"), resultSet.getLong("library_card_number"),
                         resultSet.getString("email"), resultSet.getInt("grade")));
             }
 
@@ -266,7 +266,7 @@ public final class StudentDao {
             ptmt.setString(3, student.getEmail());
             ptmt.setString(4, student.getCourse());
             ptmt.setInt(5, student.getGrade());
-            ptmt.setInt(6, student.getLibraryCardNumber());
+            ptmt.setLong(6, student.getLibraryCardNumber());
             ptmt.setInt(7, pathID);
 
             if(ptmt.executeUpdate() > 0)
@@ -298,7 +298,7 @@ public final class StudentDao {
 
             while (resultSet.next()) {
                 returnedStudent.add(new Student(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getInt("age"),
-                        resultSet.getString("course"), resultSet.getInt("library_card_number"),
+                        resultSet.getString("course"), resultSet.getLong("library_card_number"),
                         resultSet.getString("email"), resultSet.getInt("grade")));
             }
 

@@ -23,14 +23,14 @@ public class Student extends LibraryMember {
     private int grade;
 
 
-    public Student(Long id, String name, int age, String course, int libraryCardNumber, String email, int grade){
+    public Student(Long id, String name, int age, String course, Long libraryCardNumber, String email, int grade){
         super(id, name, age, libraryCardNumber, email);
         this.course = course;
         this.grade = grade;
 
     }
 
-    public Student(String name, int age, String course, int libraryCardNumber, String email, int grade){
+    public Student(String name, int age, String course, Long libraryCardNumber, String email, int grade){
         super(name, age, libraryCardNumber, email);
         this.course = course;
         this.grade = grade;
