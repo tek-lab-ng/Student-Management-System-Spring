@@ -14,14 +14,13 @@ public class Student extends LibraryMember {
 
     @NotBlank(message = "Course field cannot be blank")
     @Size(min = 4, message = "Course name should be 4 or more letters")
-    @Pattern(regexp = "[A-Za-z]+", message = "Course field cannot contain number and special characters")
+    @Pattern(regexp = "^[A-Za-z]+( [A-Za-z]+)*$", message = "Course field cannot contain number and special characters")
     @Column(name = "course")
     private String course;
     @Min(0)
     @Max(100)
     @Column(name = "grade")
     private int grade;
-
 
     public Student(Long id, String name, int age, String course, Long libraryCardNumber, String email, int grade){
         super(id, name, age, libraryCardNumber, email);

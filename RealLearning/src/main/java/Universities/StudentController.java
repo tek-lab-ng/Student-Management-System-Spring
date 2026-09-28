@@ -1,6 +1,7 @@
 package Universities;
 
 import Universities.DTO.StudentRequest;
+import Universities.DTO.StudentResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,32 +21,32 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getAllStudent(){
+    public List<StudentResponse> getAllStudent(){
         return studentService.getAllStudents();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getStudentByID(@PathVariable Long id){
-        Optional<Student> student = studentService.getStudentById(id);
-        if(student.isEmpty()){
+        Optional<StudentResponse> studentResponse = studentService.getStudentById(id);
+        if(studentResponse.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found");
         } else {
-           return ResponseEntity.status(HttpStatus.OK).body(student);
+           return ResponseEntity.status(HttpStatus.OK).body(studentResponse.get());
 
         }
     }
 
     @PostMapping
-    public ResponseEntity<String> addStudent(@RequestBody StudentRequest studentRequest){
-        studentService.addStudent(studentRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Student " + studentRequest.getName() + "   successfully added");
+    public ResponseEntity<StudentResponse> addStudent(@RequestBody StudentRequest studentRequest){
+       StudentResponse st = studentService.addStudent(studentRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(st);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody  @Valid StudentGradeRequest stg){
-         Optional<Student> student = studentService.updateStudent(id, stg.getGrade());
+    public ResponseEntity<?> updateStudentGrade(@PathVariable Long id, @RequestBody  @Valid StudentGradeRequest stg){
+         Optional<StudentResponse> student = studentService.updateStudentGrade(id, stg.getGrade());
          if(student.isPresent())
-             return ResponseEntity.ok(student);
+             return ResponseEntity.ok(student.get());
          else
              return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
@@ -63,8 +64,8 @@ public class StudentController {
     }
 
     @PutMapping("/{pathid}")
-    public ResponseEntity<?> updateStudentProfile(@RequestBody @Valid Student student, @PathVariable Long pathid){
-        Student st = studentService.updateStudentProfile(student, pathid);
+    public ResponseEntity<?> updateStudentProfile(@RequestBody @Valid StudentRequest studentRequest, @PathVariable Long pathid){
+        StudentResponse st = studentService.updateStudentProfile(studentRequest, pathid);
         if(st != null)
             return ResponseEntity.status(HttpStatus.OK).body(new StudentUpdateProfile(st, "Student profile successfully updated"));
         else

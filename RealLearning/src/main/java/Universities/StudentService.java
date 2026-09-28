@@ -2,6 +2,7 @@ package Universities;
 
 
 import Universities.DTO.StudentRequest;
+import Universities.DTO.StudentResponse;
 import Universities.Mapper.StudentMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,32 +20,35 @@ public class StudentService {
         this.repository =  studentJpaRepository;
     }
 
-    public List<Student> getAllStudents(){
+    public List<StudentResponse> getAllStudents(){
 //        return StudentDao.getAllStudents();
-        return repository.findAll();
+        List<Student> students = repository.findAll();
+        return students.stream().map(StudentMapper::toStudentResponse).toList();
     }
 
-    public Optional<Student> getStudentById(Long id){
+    public Optional<StudentResponse> getStudentById(Long id){
 //        return StudentDao.getStudentById(id);
-        return repository.findById(id);
+        return repository.findById(id).map(StudentMapper::toStudentResponse);
     }
 
     @Transactional
-    public Student addStudent(StudentRequest studentRequest) {
+    public StudentResponse addStudent(StudentRequest studentRequest) {
         Student st = StudentMapper.toStudent(studentRequest);
         st = repository.save(st);
         st.setLibraryCardNumber(10000 + st.getId());
 
-        return st;
+        return StudentMapper.toStudentResponse(st);
     }
 
-    public Optional<Student> updateStudent(Long id , int grade) {
+    public Optional<StudentResponse> updateStudentGrade(Long id , int grade) {
 
-        return repository.findById(id)
+        Optional<Student> studendentUpdatedGrade =repository.findById(id)
                 .map(student -> {
                     student.setGrade(grade);
                     return repository.save(student);
                 });
+
+      return  studendentUpdatedGrade.map(StudentMapper::toStudentResponse);
 
     }
 
@@ -76,7 +80,7 @@ public class StudentService {
 
 
     @Transactional
-    public Student updateStudentProfile(Student student, Long pathid){
+    public StudentResponse updateStudentProfile(StudentRequest studentRequest, Long pathid){
 //        try(Connection con = DatabaseConnection.getConnection()){
 //
 //            return StudentDao.updateStudentProfile(con, student, pathid);
@@ -85,14 +89,13 @@ public class StudentService {
 //            throw new RuntimeException(e);
 //        }
         Student existstudent = repository.findById(pathid).orElseThrow();
-        existstudent.setName(student.getName());
-        existstudent.setAge(student.getAge());
-        existstudent.setGrade(student.getGrade());
-        existstudent.setCourse(student.getCourse());
-        existstudent.setLibraryCardNumber(student.getLibraryCardNumber());
-        existstudent.setEmail(student.getEmail());
+        existstudent.setName(studentRequest.getName());
+        existstudent.setAge(studentRequest.getAge());
+        existstudent.setGrade(studentRequest.getGrade());
+        existstudent.setCourse(studentRequest.getCourse());
+        existstudent.setEmail(studentRequest.getEmail());
 
-        return existstudent;
+        return StudentMapper.toStudentResponse(existstudent);
     }
 /**
     public void addStudentAndUpdateGrade(Student student, int grade) {

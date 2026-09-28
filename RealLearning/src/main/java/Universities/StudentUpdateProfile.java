@@ -1,20 +1,22 @@
 package Universities;
 
+import Universities.DTO.StudentResponse;
+
 public class StudentUpdateProfile {
-    private Student student;
+    private StudentResponse studentResponse;
     private String message;
 
-    public StudentUpdateProfile(Student student, String message){
-        this.student = student;
+    public StudentUpdateProfile(StudentResponse student, String message){
+        this.studentResponse = student;
         this.message = message;
     }
 
-    public Student getStudent() {
-        return student;
+    public StudentResponse getStudent() {
+        return studentResponse;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setStudent(StudentResponse student) {
+        this.studentResponse = student;
     }
 
     public String getMessage() {

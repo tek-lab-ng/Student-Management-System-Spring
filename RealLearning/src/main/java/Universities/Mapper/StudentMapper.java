@@ -1,6 +1,7 @@
 package Universities.Mapper;
 
 import Universities.DTO.StudentRequest;
+import Universities.DTO.StudentResponse;
 import Universities.Student;
 
 public final class StudentMapper {
@@ -14,5 +15,19 @@ public final class StudentMapper {
         student.setGrade(request.getGrade());
 
         return student;
+    }
+
+    public static StudentResponse toStudentResponse(Student student) {
+        StudentResponse studentResponse = new StudentResponse();
+        studentResponse.setId(student.getId());
+        studentResponse.setName(student.getName());
+        studentResponse.setAge(student.getAge());
+        studentResponse.setEmail(student.getEmail());
+        studentResponse.setCourse(student.getCourse());
+        studentResponse.setLibraryCardNumber(student.getLibraryCardNumber());
+        studentResponse.setGrade(student.getGrade());
+
+        return studentResponse;
+
     }
 }
