@@ -1,15 +1,14 @@
 package Universities;
 
 import Universities.AbstractObject.LibraryMember;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 //This is the Student class
 
 @Entity
 @Table(name = "Students")
+
 public class Student extends LibraryMember {
 
     @NotBlank(message = "Course field cannot be blank")
@@ -21,6 +20,9 @@ public class Student extends LibraryMember {
     @Max(100)
     @Column(name = "grade")
     private int grade;
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     public Student(Long id, String name, int age, String course, Long libraryCardNumber, String email, int grade){
         super(id, name, age, libraryCardNumber, email);

@@ -53,13 +53,13 @@ public class StudentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStudent(@PathVariable Long id){
-       studentService.deleteStudent(id);
-//       if(value) {
-//           return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//       } else {
-//           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
-//       }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        boolean value = studentService.deleteStudent(id);
+       if(value) {
+           return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+       } else {
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
+       }
+//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 

@@ -24,6 +24,9 @@ public class StudentRequest {
     @Max(100)
     private int grade;
 
+    @NotNull
+    private Long departmentId;
+
     public String getName() {
         return name;
     }
@@ -63,4 +66,13 @@ public class StudentRequest {
     public void setGrade(int grade) {
         this.grade = grade;
     }
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
+    }
+
+
 }

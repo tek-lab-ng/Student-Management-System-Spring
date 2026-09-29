@@ -4,6 +4,8 @@ package Universities;
 import Universities.DTO.StudentRequest;
 import Universities.DTO.StudentResponse;
 import Universities.Mapper.StudentMapper;
+import Universities.Paymentmember.DepartmentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,11 +15,16 @@ import java.util.Optional;
 @Service
 public class StudentService {
 
-
+    @Autowired
     private final StudentJpaRepository repository;
 
-    public StudentService(StudentJpaRepository studentJpaRepository){
+    @Autowired
+    private final DepartmentRepository departmentRepository;
+
+
+    public StudentService(StudentJpaRepository studentJpaRepository, DepartmentRepository departmentRepository){
         this.repository =  studentJpaRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     public List<StudentResponse> getAllStudents(){
@@ -52,9 +59,14 @@ public class StudentService {
 
     }
 
-    public void deleteStudent(Long id){
+    public boolean deleteStudent(Long id){
        Optional<Student> student = repository.findById(id);
-        student.ifPresent(repository::delete);
+       if(student.isPresent()){
+           repository.delete(student.get());
+           return true;
+       } else {
+           return false;
+       }
     }
 
     public List<Student> getStudentByCourse(String course){
