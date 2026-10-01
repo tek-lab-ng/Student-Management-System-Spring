@@ -1,6 +1,7 @@
 package Universities;
 
 import Universities.DatabaseConnection.DatabaseConnection;
+import Universities.Entity.Student;
 
 import java.sql.*;
 import java.util.ArrayList;

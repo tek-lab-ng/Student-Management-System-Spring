@@ -3,7 +3,7 @@ package Universities.ObjectClass;
 
 import Universities.AbstractObject.LibraryMember;
 import Universities.Paymentmember.Payable;
-import Universities.Student;
+import Universities.Entity.Student;
 
 import java.util.Scanner;
 

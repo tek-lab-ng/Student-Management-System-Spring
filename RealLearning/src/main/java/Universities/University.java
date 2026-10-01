@@ -1,6 +1,7 @@
 package Universities;
 
 import Universities.AbstractObject.Person;
+import Universities.Entity.Student;
 import Universities.Exceptions.DuplicatePersonIdException;
 import Universities.Exceptions.InvalidAgeException;
 import Universities.Exceptions.InvalidEmailException;

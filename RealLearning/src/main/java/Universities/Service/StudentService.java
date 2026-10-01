@@ -1,10 +1,13 @@
-package Universities;
+package Universities.Service;
 
 
 import Universities.DTO.StudentRequest;
 import Universities.DTO.StudentResponse;
+import Universities.Entity.Department;
+import Universities.Entity.Student;
 import Universities.Mapper.StudentMapper;
-import Universities.Paymentmember.DepartmentRepository;
+import Universities.Repository.DepartmentRepository;
+import Universities.Repository.StudentJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,7 @@ public class StudentService {
     public StudentService(StudentJpaRepository studentJpaRepository, DepartmentRepository departmentRepository){
         this.repository =  studentJpaRepository;
         this.departmentRepository = departmentRepository;
+
     }
 
     public List<StudentResponse> getAllStudents(){
@@ -41,9 +45,10 @@ public class StudentService {
     @Transactional
     public StudentResponse addStudent(StudentRequest studentRequest) {
         Student st = StudentMapper.toStudent(studentRequest);
+        Department department = departmentRepository.findById(studentRequest.getDepartmentId()).orElseThrow();
+        st.setDepartment(department);
         st = repository.save(st);
         st.setLibraryCardNumber(10000 + st.getId());
-
         return StudentMapper.toStudentResponse(st);
     }
 

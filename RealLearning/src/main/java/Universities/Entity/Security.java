@@ -1,4 +1,4 @@
-package Universities;
+package Universities.Entity;
 
 import Universities.AbstractObject.Person;
 import Universities.Paymentmember.Payable;

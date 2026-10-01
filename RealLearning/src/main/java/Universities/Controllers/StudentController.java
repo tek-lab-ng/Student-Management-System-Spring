@@ -1,7 +1,10 @@
-package Universities;
+package Universities.Controllers;
 
+import Universities.DTO.StudentGradeRequest;
 import Universities.DTO.StudentRequest;
 import Universities.DTO.StudentResponse;
+import Universities.Service.StudentService;
+import Universities.StudentUpdateProfile;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

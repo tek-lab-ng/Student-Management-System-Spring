@@ -1,5 +1,6 @@
-package Universities;
+package Universities.Exceptions;
 
+import Universities.ValidationErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

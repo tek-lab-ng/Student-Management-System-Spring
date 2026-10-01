@@ -1,5 +1,7 @@
 package Universities;
 
+import Universities.Entity.Student;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

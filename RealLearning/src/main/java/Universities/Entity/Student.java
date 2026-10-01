@@ -1,8 +1,11 @@
-package Universities;
+package Universities.Entity;
 
 import Universities.AbstractObject.LibraryMember;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //This is the Student class
 
@@ -23,6 +26,14 @@ public class Student extends LibraryMember {
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_program",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "program_id")
+    )
+    private List<Program> programs = new ArrayList<>();
 
     public Student(Long id, String name, int age, String course, Long libraryCardNumber, String email, int grade){
         super(id, name, age, libraryCardNumber, email);
@@ -53,6 +64,23 @@ public class Student extends LibraryMember {
         this.grade = grade;
     }
     public int getGrade(){return grade;}
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public List<Program> getPrograms() {
+        return programs;
+    }
+
+    public void setPrograms(List<Program> programs) {
+        this.programs = programs;
+    }
+
 
     @Override
     public void introduce() {

@@ -1,4 +1,4 @@
-package Universities;
+package Universities.DTO;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

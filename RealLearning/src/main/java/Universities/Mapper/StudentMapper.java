@@ -2,7 +2,7 @@ package Universities.Mapper;
 
 import Universities.DTO.StudentRequest;
 import Universities.DTO.StudentResponse;
-import Universities.Student;
+import Universities.Entity.Student;
 
 public final class StudentMapper {
     public static Student toStudent(StudentRequest request) {
