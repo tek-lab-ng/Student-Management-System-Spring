@@ -4,30 +4,33 @@ package Universities.Service;
 import Universities.DTO.StudentRequest;
 import Universities.DTO.StudentResponse;
 import Universities.Entity.Department;
+import Universities.Entity.Program;
 import Universities.Entity.Student;
 import Universities.Mapper.StudentMapper;
 import Universities.Repository.DepartmentRepository;
+import Universities.Repository.ProgramRepository;
 import Universities.Repository.StudentJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class StudentService {
 
-    @Autowired
+
     private final StudentJpaRepository repository;
-
-    @Autowired
     private final DepartmentRepository departmentRepository;
+    private final ProgramRepository programRepository;
 
 
-    public StudentService(StudentJpaRepository studentJpaRepository, DepartmentRepository departmentRepository){
+    public StudentService(StudentJpaRepository studentJpaRepository, DepartmentRepository departmentRepository, ProgramRepository programRepository){
         this.repository =  studentJpaRepository;
         this.departmentRepository = departmentRepository;
+        this.programRepository = programRepository;
 
     }
 
@@ -113,6 +116,16 @@ public class StudentService {
         existstudent.setEmail(studentRequest.getEmail());
 
         return StudentMapper.toStudentResponse(existstudent);
+    }
+
+    @Transactional
+    public StudentResponse addProgramToStudent(Long studentId, Long programId){
+        Student student = repository.findById(studentId).orElseThrow();
+        Program program = programRepository.findById(programId).orElseThrow();
+        student.getPrograms().add(program);
+        repository.save(student);
+
+        return StudentMapper.toStudentResponse(student);
     }
 /**
     public void addStudentAndUpdateGrade(Student student, int grade) {

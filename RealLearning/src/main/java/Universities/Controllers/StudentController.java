@@ -75,4 +75,10 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with that id not found");
     }
 
+    @PostMapping("/{studentId}/program/{programId}")
+    public ResponseEntity<StudentResponse> addProgramToStudent(@PathVariable Long studentId, @PathVariable Long programId){
+        StudentResponse studentResponse = studentService.addProgramToStudent(studentId, programId);
+        return ResponseEntity.ok(studentResponse);
+    }
+
 }
