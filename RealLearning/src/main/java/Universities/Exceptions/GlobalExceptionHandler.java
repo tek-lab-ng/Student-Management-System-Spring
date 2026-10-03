@@ -2,6 +2,7 @@ package Universities.Exceptions;
 
 import Universities.DTO.ExceptionResponse;
 import Universities.ValidationErrorResponse;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +63,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException (HttpMessageNotReadableException ex){
-        String message = ex.getMessage();
+        Throwable cause = ex.getCause();
+        String message = null;
+        if(cause instanceof JsonMappingException jsonMappingException){
+            List<JsonMappingException.Reference> listOfErrored = jsonMappingException.getPath();
+            message  =  "Invalid value for field  " + listOfErrored.get(0).getFieldName() + " . Please provide the correct data type.";
+        }
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponse(message));
     }
 

@@ -71,7 +71,7 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with that id not found");
     }
 
-    @PostMapping("/{studentId}/program/{programId}")
+    @PostMapping("/{studentId}/programs/{programId}")
     public ResponseEntity<StudentResponse> addProgramToStudent(@PathVariable Long studentId, @PathVariable Long programId){
         StudentResponse studentResponse = studentService.addProgramToStudent(studentId, programId);
         return ResponseEntity.ok(studentResponse);
@@ -81,5 +81,11 @@ public class StudentController {
     public ResponseEntity<List<ProgramResponse>> getProgramsByStudent(@PathVariable Long studentId){
         List<ProgramResponse> listOfStudProg = studentService.getProgramsByStudent(studentId);
         return ResponseEntity.ok(listOfStudProg);
+    }
+
+    @DeleteMapping("/{studentId}/programs/{programId}")
+    public ResponseEntity<List<ProgramResponse>> removeProgramFromStudent(@PathVariable Long studentId, @PathVariable Long programId){
+       List<ProgramResponse> programResponses = studentService.removeProgramFromStudent(studentId, programId);
+        return ResponseEntity.ok(programResponses);
     }
 }

@@ -8,6 +8,7 @@ import Universities.Entity.Department;
 import Universities.Entity.Program;
 import Universities.Entity.Student;
 import Universities.Exceptions.ProgramNotFoundException;
+import Universities.Exceptions.ResourceNotFoundException;
 import Universities.Exceptions.StudentNotFoundException;
 import Universities.Mapper.ProgramMapper;
 import Universities.Mapper.StudentMapper;
@@ -137,6 +138,18 @@ public class StudentService {
         Student student = repository.findById(studentId).orElseThrow(() -> new StudentNotFoundException("Student with ID  " + studentId + "not found"));
         List<Program> programList = student.getPrograms();
         return programList.stream().map(ProgramMapper::toProgramResponse).toList();
+    }
+
+    @Transactional
+    public List<ProgramResponse> removeProgramFromStudent(Long studentId, Long programId){
+        Student student = repository.findById(studentId).orElseThrow(() -> new StudentNotFoundException("student with " + studentId + " can not be found"));
+        Program program = programRepository.findById(programId).orElseThrow(()-> new ProgramNotFoundException("Program with id " + programId + " can not be found"));
+        List<Program> lisOfProgramByStudent = student.getPrograms();
+        boolean removed = lisOfProgramByStudent.remove(program);
+        if(!removed)
+            throw new ResourceNotFoundException("Student is not enrolled in this program");
+        else
+             return lisOfProgramByStudent.stream().map(ProgramMapper::toProgramResponse).toList();
     }
 /**
     public void addStudentAndUpdateGrade(Student student, int grade) {
