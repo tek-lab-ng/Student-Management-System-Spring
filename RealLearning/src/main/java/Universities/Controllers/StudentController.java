@@ -1,5 +1,6 @@
 package Universities.Controllers;
 
+import Universities.DTO.ProgramResponse;
 import Universities.DTO.StudentGradeRequest;
 import Universities.DTO.StudentRequest;
 import Universities.DTO.StudentResponse;
@@ -30,13 +31,8 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getStudentByID(@PathVariable Long id){
-        Optional<StudentResponse> studentResponse = studentService.getStudentById(id);
-        if(studentResponse.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found");
-        } else {
-           return ResponseEntity.status(HttpStatus.OK).body(studentResponse.get());
-
-        }
+        StudentResponse studentResponse = studentService.getStudentById(id);
+           return ResponseEntity.status(HttpStatus.OK).body(studentResponse);
     }
 
     @PostMapping
@@ -81,4 +77,9 @@ public class StudentController {
         return ResponseEntity.ok(studentResponse);
     }
 
+    @GetMapping("/{studentId}/programs")
+    public ResponseEntity<List<ProgramResponse>> getProgramsByStudent(@PathVariable Long studentId){
+        List<ProgramResponse> listOfStudProg = studentService.getProgramsByStudent(studentId);
+        return ResponseEntity.ok(listOfStudProg);
+    }
 }

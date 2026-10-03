@@ -1,11 +1,15 @@
 package Universities.Service;
 
 
+import Universities.DTO.ProgramResponse;
 import Universities.DTO.StudentRequest;
 import Universities.DTO.StudentResponse;
 import Universities.Entity.Department;
 import Universities.Entity.Program;
 import Universities.Entity.Student;
+import Universities.Exceptions.ProgramNotFoundException;
+import Universities.Exceptions.StudentNotFoundException;
+import Universities.Mapper.ProgramMapper;
 import Universities.Mapper.StudentMapper;
 import Universities.Repository.DepartmentRepository;
 import Universities.Repository.ProgramRepository;
@@ -40,9 +44,9 @@ public class StudentService {
         return students.stream().map(StudentMapper::toStudentResponse).toList();
     }
 
-    public Optional<StudentResponse> getStudentById(Long id){
-//        return StudentDao.getStudentById(id);
-        return repository.findById(id).map(StudentMapper::toStudentResponse);
+    public StudentResponse getStudentById(Long studentId){
+        Student student = repository.findById(studentId).orElseThrow(() -> new StudentNotFoundException("Student with ID  " + studentId + " not found"));
+        return StudentMapper.toStudentResponse(student);
     }
 
     @Transactional
@@ -108,7 +112,8 @@ public class StudentService {
 //        } catch (SQLException e){
 //            throw new RuntimeException(e);
 //        }
-        Student existstudent = repository.findById(pathid).orElseThrow();
+        Student existstudent = repository.findById(pathid).orElseThrow(() -> new StudentNotFoundException("Student with ID  " + pathid + "not found"));
+
         existstudent.setName(studentRequest.getName());
         existstudent.setAge(studentRequest.getAge());
         existstudent.setGrade(studentRequest.getGrade());
@@ -120,12 +125,18 @@ public class StudentService {
 
     @Transactional
     public StudentResponse addProgramToStudent(Long studentId, Long programId){
-        Student student = repository.findById(studentId).orElseThrow();
-        Program program = programRepository.findById(programId).orElseThrow();
+        Student student = repository.findById(studentId).orElseThrow(() -> new StudentNotFoundException("Student with ID  " + studentId + "not found"));
+        Program program = programRepository.findById(programId).orElseThrow(() -> new ProgramNotFoundException("Program with ID  " + programId + " not found"));
         student.getPrograms().add(program);
         repository.save(student);
 
         return StudentMapper.toStudentResponse(student);
+    }
+
+    public List<ProgramResponse> getProgramsByStudent(Long studentId){
+        Student student = repository.findById(studentId).orElseThrow(() -> new StudentNotFoundException("Student with ID  " + studentId + "not found"));
+        List<Program> programList = student.getPrograms();
+        return programList.stream().map(ProgramMapper::toProgramResponse).toList();
     }
 /**
     public void addStudentAndUpdateGrade(Student student, int grade) {
