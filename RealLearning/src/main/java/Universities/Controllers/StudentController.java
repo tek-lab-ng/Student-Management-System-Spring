@@ -1,9 +1,7 @@
 package Universities.Controllers;
 
-import Universities.DTO.ProgramResponse;
-import Universities.DTO.StudentGradeRequest;
-import Universities.DTO.StudentRequest;
-import Universities.DTO.StudentResponse;
+import Universities.DTO.*;
+import Universities.Entity.Program;
 import Universities.Service.StudentService;
 import Universities.StudentUpdateProfile;
 import jakarta.validation.Valid;
@@ -87,5 +85,21 @@ public class StudentController {
     public ResponseEntity<List<ProgramResponse>> removeProgramFromStudent(@PathVariable Long studentId, @PathVariable Long programId){
        List<ProgramResponse> programResponses = studentService.removeProgramFromStudent(studentId, programId);
         return ResponseEntity.ok(programResponses);
+    }
+    @PatchMapping("/{studentId}/department/{departmentId}")
+    public ResponseEntity<StudentResponse> changeStudentDepartment(@PathVariable Long studentId, @PathVariable Long departmentId){
+        StudentResponse studentResponse = studentService.changeStudentDept(studentId, departmentId);
+        return ResponseEntity.ok(studentResponse);
+    }
+    @PatchMapping("/{studentId}/department")
+    public ResponseEntity<StudentResponse> removeDepartmentFromStudent(@PathVariable Long studentId){
+        StudentResponse studentResponse = studentService.removeDepartmentFromStudent(studentId);
+        return ResponseEntity.ok(studentResponse);
+    }
+
+    @PatchMapping("/{studentId}/programs")
+    public ResponseEntity<List<ProgramResponse>> replaceAllProgStudent(@RequestBody ReplaceProgramsRequest replaceProgramsRequest, @PathVariable Long studentId){
+        StudentResponse studentResponse = studentService.replaceProgramsForStudent(replaceProgramsRequest.getProgramIds(), studentId);
+        return ResponseEntity.ok(studentResponse.getPrograms());
     }
 }

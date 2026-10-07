@@ -1,8 +1,11 @@
 package Universities.Mapper;
 
+import Universities.DTO.ProgramResponse;
 import Universities.DTO.StudentRequest;
 import Universities.DTO.StudentResponse;
 import Universities.Entity.Student;
+
+import java.util.List;
 
 public final class StudentMapper {
     public static Student toStudent(StudentRequest request) {
@@ -18,6 +21,8 @@ public final class StudentMapper {
     }
 
     public static StudentResponse toStudentResponse(Student student) {
+        Long departmentId = student.getDepartment() != null ? student.getDepartment().getId() : null;
+        List<ProgramResponse> programResponses = student.getPrograms().stream().map(ProgramMapper::toProgramResponse).toList();
         StudentResponse studentResponse = new StudentResponse();
         studentResponse.setId(student.getId());
         studentResponse.setName(student.getName());
@@ -26,6 +31,8 @@ public final class StudentMapper {
         studentResponse.setCourse(student.getCourse());
         studentResponse.setLibraryCardNumber(student.getLibraryCardNumber());
         studentResponse.setGrade(student.getGrade());
+        studentResponse.setDepartmentId(departmentId);
+        studentResponse.setPrograms(programResponses);
 
         return studentResponse;
 

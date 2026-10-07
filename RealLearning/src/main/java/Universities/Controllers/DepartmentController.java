@@ -29,14 +29,14 @@ public class DepartmentController {
 
     }
 
-    @GetMapping("{departmentName}/students")
-    public ResponseEntity<?> getStudentsByDepartment(@PathVariable @Valid DepartmentRequest departmentRequest){
-        List<StudentResponse> departmentResponse = departmentService.getStudentsByDepartment(departmentRequest);
-        if(departmentResponse.isEmpty())
-            return ResponseEntity.notFound().build();
-        else
-            return ResponseEntity.ok(departmentResponse);
-    }
+//    @GetMapping("/{departmentName}/students")
+//    public ResponseEntity<?> getStudentsByDepartment(@PathVariable String departmentName){
+//        List<StudentResponse> departmentResponse = departmentService.getStudentsByDepartment(departmentName);
+//        if(departmentResponse.isEmpty())
+//            return ResponseEntity.notFound().build();
+//        else
+//            return ResponseEntity.ok(departmentResponse);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<DepartmentResponse> getDepartmentById(@PathVariable Long id){
@@ -47,6 +47,21 @@ public class DepartmentController {
     @GetMapping
     public ResponseEntity< List<DepartmentResponse>> getAllDepartment(){
         return ResponseEntity.ok(departmentService.getAllDepartments());
+    }
+
+    @GetMapping("/{departmentId}/students")
+    public ResponseEntity<List<StudentResponse>> getStudentOfADepartment(@PathVariable Long departmentId){
+        List<StudentResponse> studentResponses = departmentService.getStudentByDepartment(departmentId);
+        if(studentResponses.isEmpty())
+            return ResponseEntity.notFound().build();
+        else
+             return ResponseEntity.ok(studentResponses);
+    }
+
+    @DeleteMapping("/{departmentId}")
+    public ResponseEntity<?> deleteDepartment(@PathVariable Long departmentId){
+        departmentService.deleteDepartment(departmentId);
+        return ResponseEntity.noContent().build();
     }
 
 }

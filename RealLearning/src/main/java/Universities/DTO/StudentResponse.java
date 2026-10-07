@@ -1,5 +1,9 @@
 package Universities.DTO;
 
+import Universities.DTO.ProgramResponse;
+
+import java.util.List;
+
 public class StudentResponse {
     private Long id;
     private String name;
@@ -8,6 +12,8 @@ public class StudentResponse {
     private Long libraryCardNumber;
     private String course;
     private int grade;
+    private Long departmentId;
+    private List<ProgramResponse> programs;
 
     public Long getId() {
         return id;
@@ -63,5 +69,21 @@ public class StudentResponse {
 
     public void setGrade(int grade) {
         this.grade = grade;
+    }
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public List<ProgramResponse> getPrograms() {
+        return programs;
+    }
+
+    public void setPrograms(List<ProgramResponse> programs) {
+        this.programs = programs;
     }
 }
