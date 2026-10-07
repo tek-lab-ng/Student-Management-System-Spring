@@ -17,7 +17,7 @@ public abstract class Person {
     @Min(16)
     @Max(50)
     @Column(name = "age")
-    private int age;
+    private Integer age;
 
     @Email(message = "Please provide a valid email address")
     private String email;

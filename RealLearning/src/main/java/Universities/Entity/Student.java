@@ -22,7 +22,7 @@ public class Student extends LibraryMember {
     @Min(0)
     @Max(100)
     @Column(name = "grade")
-    private int grade;
+    private Integer grade;
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
