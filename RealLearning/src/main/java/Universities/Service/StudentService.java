@@ -2,11 +2,13 @@ package Universities.Service;
 
 
 import Universities.DTO.ProgramResponse;
+import Universities.DTO.StudentPatchRequest;
 import Universities.DTO.StudentRequest;
 import Universities.DTO.StudentResponse;
 import Universities.Entity.Department;
 import Universities.Entity.Program;
 import Universities.Entity.Student;
+import Universities.Exceptions.DepartmentNotFoundException;
 import Universities.Exceptions.ProgramNotFoundException;
 import Universities.Exceptions.ResourceNotFoundException;
 import Universities.Exceptions.StudentNotFoundException;
@@ -39,12 +41,6 @@ public class StudentService {
 
     }
 
-    public List<StudentResponse> getAllStudents(){
-//        return StudentDao.getAllStudents();
-        List<Student> students = repository.findAll();
-        return students.stream().map(StudentMapper::toStudentResponse).toList();
-    }
-
     public StudentResponse getStudentById(Long studentId){
         Student student = repository.findById(studentId).orElseThrow(() -> new StudentNotFoundException("Student with ID  " + studentId + " not found"));
         return StudentMapper.toStudentResponse(student);
@@ -60,17 +56,6 @@ public class StudentService {
         return StudentMapper.toStudentResponse(st);
     }
 
-    public Optional<StudentResponse> updateStudentGrade(Long id , int grade) {
-
-        Optional<Student> studendentUpdatedGrade =repository.findById(id)
-                .map(student -> {
-                    student.setGrade(grade);
-                    return repository.save(student);
-                });
-
-      return  studendentUpdatedGrade.map(StudentMapper::toStudentResponse);
-
-    }
 
     public boolean deleteStudent(Long id){
        Optional<Student> student = repository.findById(id);
@@ -102,28 +87,6 @@ public class StudentService {
 
     }
 
-
-
-    @Transactional
-    public StudentResponse updateStudentProfile(StudentRequest studentRequest, Long studentId){
-//        try(Connection con = DatabaseConnection.getConnection()){
-//
-//            return StudentDao.updateStudentProfile(con, student, studentId);
-//
-//        } catch (SQLException e){
-//            throw new RuntimeException(e);
-//        }
-        Student existstudent = repository.findById(studentId).orElseThrow(() -> new StudentNotFoundException("Student with ID  " + studentId + "not found"));
-        Student student = StudentMapper.toStudent(studentRequest);
-
-        existstudent.setName(student.getName());
-        existstudent.setAge(student.getAge());
-        existstudent.setGrade(student.getGrade());
-        existstudent.setCourse(student.getCourse());
-        existstudent.setEmail(student.getEmail());
-
-        return StudentMapper.toStudentResponse(existstudent);
-    }
 
     @Transactional
     public StudentResponse addProgramToStudent(Long studentId, Long programId){
@@ -178,6 +141,43 @@ public class StudentService {
         return StudentMapper.toStudentResponse(student);
 
     }
+    @Transactional
+    public StudentResponse updateStudentProfile(Long studentId, StudentPatchRequest request) {
+        Student student = repository.findById(studentId).orElseThrow(() ->new StudentNotFoundException("Student with id " + studentId + " can not be found "));
+        if (request.getName() != null)
+            student.setName(request.getName());
+
+        if (request.getAge() != null)
+            student.setAge(request.getAge());
+
+        if (request.getEmail() != null)
+            student.setEmail(request.getEmail());
+
+        if (request.getCourse() != null)
+            student.setCourse(request.getCourse());
+
+        if (request.getGrade() != null)
+            student.setGrade(request.getGrade());
+
+        return StudentMapper.toStudentResponse(student);
+    }
+
+    public List<StudentResponse> filterStudents(String name, Long departmentId) {
+        List<Student> student;
+       if(name != null && departmentId != null ){
+           Department department = departmentRepository.findById(departmentId).orElseThrow(()-> new DepartmentNotFoundException("Department not found"));
+           student = repository.findByNameAndDepartment(name, department);
+       }else if (name != null){
+           student = repository.findByName(name);
+        } else if(departmentId != null ){
+            Department department = departmentRepository.findById(departmentId).orElseThrow(()-> new DepartmentNotFoundException("Department not found"));
+            student = repository.findByDepartment(department);
+        } else {
+           student = repository.findAll();
+        }
+        return student.stream().map(StudentMapper::toStudentResponse).toList();
+    }
+
 /**
     public void addStudentAndUpdateGrade(Student student, int grade) {
 

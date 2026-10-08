@@ -1,9 +1,7 @@
 package Universities.Controllers;
 
 import Universities.DTO.*;
-import Universities.Entity.Program;
 import Universities.Service.StudentService;
-import Universities.StudentUpdateProfile;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +20,10 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping
-    public List<StudentResponse> getAllStudent(){
-        return studentService.getAllStudents();
-    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getStudentByID(@PathVariable Long id){
-        StudentResponse studentResponse = studentService.getStudentById(id);
+    @GetMapping("/{studentId}")
+    public ResponseEntity<?> getStudentByID(@PathVariable Long studentId){
+        StudentResponse studentResponse = studentService.getStudentById(studentId);
            return ResponseEntity.status(HttpStatus.OK).body(studentResponse);
     }
 
@@ -37,15 +31,6 @@ public class StudentController {
     public ResponseEntity<StudentResponse> addStudent(@RequestBody StudentRequest studentRequest){
        StudentResponse st = studentService.addStudent(studentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(st);
-    }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> updateStudentGrade(@PathVariable Long id, @RequestBody  @Valid StudentGradeRequest stg){
-         Optional<StudentResponse> student = studentService.updateStudentGrade(id, stg.getGrade());
-         if(student.isPresent())
-             return ResponseEntity.ok(student.get());
-         else
-             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @DeleteMapping("/{id}")
@@ -58,15 +43,6 @@ public class StudentController {
        }
 //        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-    }
-
-    @PutMapping("/{pathid}")
-    public ResponseEntity<?> updateStudentProfile(@RequestBody @Valid StudentRequest studentRequest, @PathVariable Long pathid){
-        StudentResponse st = studentService.updateStudentProfile(studentRequest, pathid);
-        if(st != null)
-            return ResponseEntity.status(HttpStatus.OK).body(new StudentUpdateProfile(st, "Student profile successfully updated"));
-        else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student with that id not found");
     }
 
     @PostMapping("/{studentId}/programs/{programId}")
@@ -101,5 +77,15 @@ public class StudentController {
     public ResponseEntity<List<ProgramResponse>> replaceAllProgStudent(@RequestBody ReplaceProgramsRequest replaceProgramsRequest, @PathVariable Long studentId){
         StudentResponse studentResponse = studentService.replaceProgramsForStudent(replaceProgramsRequest.getProgramIds(), studentId);
         return ResponseEntity.ok(studentResponse.getPrograms());
+    }
+    @PatchMapping("/{studentId}")
+    public ResponseEntity<StudentResponse> updateStudentProfile(@PathVariable Long studentId, @RequestBody @Valid StudentPatchRequest studentPatchRequest){
+        StudentResponse studentResponse = studentService.updateStudentProfile(studentId, studentPatchRequest);
+        return ResponseEntity.ok(studentResponse);
+    }
+    @GetMapping
+    public ResponseEntity<List<StudentResponse>> getAllStudents(@RequestParam(required = false) String name, @RequestParam(required = false) Long departmentId){
+        List<StudentResponse> studentResponses = studentService.filterStudents(name, departmentId);
+        return ResponseEntity.ok(studentResponses);
     }
 }
