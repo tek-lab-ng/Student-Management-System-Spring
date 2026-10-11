@@ -21,7 +21,7 @@ public class Student extends LibraryMember {
     private String course;
     @Min(0)
     @Max(100)
-    @Column(name = "grade")
+    @Column(name = "grade", nullable = true)
     private Integer grade;
     @ManyToOne
     @JoinColumn(name = "department_id")
@@ -60,10 +60,10 @@ public class Student extends LibraryMember {
         this.course = course;
     }
 
-    public void setGrade(int grade){
+    public void setGrade(Integer grade){
         this.grade = grade;
     }
-    public int getGrade(){return grade;}
+    public Integer getGrade(){return grade;}
 
     public Department getDepartment() {
         return department;

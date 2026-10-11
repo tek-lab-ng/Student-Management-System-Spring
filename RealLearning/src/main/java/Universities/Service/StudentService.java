@@ -57,14 +57,9 @@ public class StudentService {
     }
 
 
-    public boolean deleteStudent(Long id){
-       Optional<Student> student = repository.findById(id);
-       if(student.isPresent()){
-           repository.delete(student.get());
-           return true;
-       } else {
-           return false;
-       }
+    public void deleteStudent(Long id){
+       Student student = repository.findById(id).orElseThrow(() -> new StudentNotFoundException("Student with id can not be found"));
+       repository.delete(student);
     }
 
     public List<Student> getStudentByCourse(String course){

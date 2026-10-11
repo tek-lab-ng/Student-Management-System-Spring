@@ -3,7 +3,7 @@ package Universities.DTO;
 import jakarta.validation.constraints.*;
 
 public class StudentRequest {
-    @NotBlank()
+    @NotBlank
     @Size(min = 4)
     @Pattern(regexp = "[A-Za-z]+")
     private String name;
@@ -12,7 +12,7 @@ public class StudentRequest {
     @Max(50)
     private int age;
 
-    @Email()
+    @Email
     private String email;
 
     @NotBlank()

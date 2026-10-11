@@ -1,8 +1,6 @@
 package Universities.Repository;
 
-import Universities.DTO.StudentResponse;
 import Universities.Entity.Department;
-import Universities.Entity.Program;
 import Universities.Entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
