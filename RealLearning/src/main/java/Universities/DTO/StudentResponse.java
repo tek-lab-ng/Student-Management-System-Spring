@@ -1,17 +1,15 @@
 package Universities.DTO;
 
-import Universities.DTO.ProgramResponse;
-
 import java.util.List;
 
 public class StudentResponse {
     private Long id;
     private String name;
-    private int age;
+    private Integer age;
     private String email;
     private Long libraryCardNumber;
     private String course;
-    private int grade;
+    private Integer grade;
     private Long departmentId;
     private List<ProgramResponse> programs;
 
@@ -31,11 +29,11 @@ public class StudentResponse {
         this.name = name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -63,11 +61,11 @@ public class StudentResponse {
         this.course = course;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 

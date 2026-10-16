@@ -10,9 +10,11 @@ public class StudentRequest {
 
     @Min(16)
     @Max(50)
-    private int age;
+    @NotNull
+    private Integer age;
 
     @Email
+    @NotBlank
     private String email;
 
     @NotBlank()
@@ -22,10 +24,8 @@ public class StudentRequest {
 
     @Min(0)
     @Max(100)
-    private int grade;
+    private Integer grade;
 
-    @NotNull
-    private Long departmentId;
 
     public String getName() {
         return name;
@@ -35,11 +35,11 @@ public class StudentRequest {
         this.name = name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -59,20 +59,12 @@ public class StudentRequest {
         this.course = course;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
-    public Long getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
-    }
-
 
 }

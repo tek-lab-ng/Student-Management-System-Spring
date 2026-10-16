@@ -7,12 +7,13 @@ import Universities.DTO.StudentResponse;
 import Universities.Entity.Department;
 import Universities.Entity.Student;
 import Universities.Exceptions.DepartmentNotFoundException;
-import Universities.Exceptions.ResourceNotFoundException;
 import Universities.Mapper.DepartmentMapper;
 import Universities.Mapper.StudentMapper;
 import Universities.Repository.DepartmentRepository;
 import Universities.Repository.StudentJpaRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,12 +36,12 @@ public class DepartmentService {
         return DepartmentMapper.toDepartmentResponse(department);
     }
 
-    public List<StudentResponse> getStudentsByDepartment(String departmentName){
-        List<Student> listOfStudent = studentJpaRepository.findByDepartmentName(departmentName);
+    public Page<StudentResponse> getStudentsByDepartment(String departmentName, Pageable pageable){
+        Page<Student> listOfStudent = studentJpaRepository.findByDepartmentName(departmentName, pageable);
         if(listOfStudent.isEmpty())
-            return List.of();
+            return Page.empty();
         else
-            return listOfStudent.stream().map(StudentMapper::toStudentResponse).toList();
+            return listOfStudent.map(StudentMapper::toStudentResponse);
 
     }
 
@@ -67,12 +68,11 @@ public class DepartmentService {
     }
 
     @Transactional
-    public DepartmentResponse deleteDepartment(Long departmentId){
+    public void deleteDepartment(Long departmentId){
         Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new DepartmentNotFoundException("Department with id " + departmentId + " not found"));
         List<Student> students = department.getStudents();
         students.forEach(student -> student.setDepartment(null));
         departmentRepository.delete(department);
-        return DepartmentMapper.toDepartmentResponse(department);
     }
 
 }

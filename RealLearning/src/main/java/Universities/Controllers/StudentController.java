@@ -3,12 +3,15 @@ package Universities.Controllers;
 import Universities.DTO.*;
 import Universities.Service.StudentService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/students")
@@ -78,8 +81,14 @@ public class StudentController {
         return ResponseEntity.ok(studentResponse);
     }
     @GetMapping
-    public ResponseEntity<List<StudentResponse>> getAllStudents(@RequestParam(required = false) String name, @RequestParam(required = false) Long departmentId){
-        List<StudentResponse> studentResponses = studentService.filterStudents(name, departmentId);
+    public ResponseEntity<Page<StudentResponse>> getAllStudents(@RequestParam(required = false) String name, @RequestParam(required = false) Long departmentId, Pageable pageable){
+        Set<String> allowedSortFields = Set.of("name", "age", "grade", "course");
+        boolean invalidSort = pageable.getSort().stream().anyMatch(order -> !allowedSortFields.contains(order.getProperty()));
+        if (invalidSort) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid sort field. Allowed fields are: " + allowedSortFields
+            );
+        }
+        Page<StudentResponse> studentResponses = studentService.filterStudentsPaginated(name, departmentId, pageable);
         return ResponseEntity.ok(studentResponses);
     }
 }

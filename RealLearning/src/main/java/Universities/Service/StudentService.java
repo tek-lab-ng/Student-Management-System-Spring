@@ -17,6 +17,8 @@ import Universities.Mapper.StudentMapper;
 import Universities.Repository.DepartmentRepository;
 import Universities.Repository.ProgramRepository;
 import Universities.Repository.StudentJpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,8 +51,8 @@ public class StudentService {
     @Transactional
     public StudentResponse addStudent(StudentRequest studentRequest) {
         Student st = StudentMapper.toStudent(studentRequest);
-        Department department = departmentRepository.findById(studentRequest.getDepartmentId()).orElseThrow();
-        st.setDepartment(department);
+//        Department department = departmentRepository.findById(studentRequest.getDepartmentId()).orElseThrow();
+//        st.setDepartment(department);
         st = repository.save(st);
         st.setLibraryCardNumber(10000 + st.getId());
         return StudentMapper.toStudentResponse(st);
@@ -58,19 +60,18 @@ public class StudentService {
 
 
     public void deleteStudent(Long id){
-       Student student = repository.findById(id).orElseThrow(() -> new StudentNotFoundException("Student with id can not be found"));
+       Student student = repository.findById(id).orElseThrow(() -> new StudentNotFoundException("Student with id" + id + " can not be found"));
        repository.delete(student);
     }
 
-    public List<Student> getStudentByCourse(String course){
-
-//        return StudentDao.findStudentByCourse(course);
-        return repository.findByCourse(course);
+    public List<StudentResponse> getStudentByCourse(String course, Pageable pageable){
+        Page<Student> student = repository.findByCourse(course, pageable );
+        return student.stream().map(StudentMapper::toStudentResponse).toList();
     }
 
-    public List<Student> getStudentsByMinimumGrade(int minimumGrade){
-//        return StudentDao.findStudentsByMinimumGrade(minimumGrade);
-        return repository.findByGradeGreaterThanEqual(minimumGrade);
+    public List<StudentResponse> getStudentsByMinimumGrade(int minimumGrade){
+        List<Student> students = repository.findByGradeGreaterThanEqual(minimumGrade);
+        return students.stream().map(StudentMapper::toStudentResponse).toList();
     }
 
     public Student getStudentWithHighestScore(){
@@ -157,21 +158,24 @@ public class StudentService {
         return StudentMapper.toStudentResponse(student);
     }
 
-    public List<StudentResponse> filterStudents(String name, Long departmentId) {
-        List<Student> student;
+    public Page<StudentResponse> filterStudentsPaginated(String name, Long departmentId, Pageable pageable) {
+        Page<Student> student;
        if(name != null && departmentId != null ){
            Department department = departmentRepository.findById(departmentId).orElseThrow(()-> new DepartmentNotFoundException("Department not found"));
-           student = repository.findByNameAndDepartment(name, department);
+           student = repository.findByNameAndDepartment(name, department,pageable );
        }else if (name != null){
-           student = repository.findByName(name);
+           student = repository.findByName(name, pageable);
         } else if(departmentId != null ){
             Department department = departmentRepository.findById(departmentId).orElseThrow(()-> new DepartmentNotFoundException("Department not found"));
-            student = repository.findByDepartment(department);
+            student = repository.findByDepartment(department, pageable);
         } else {
-           student = repository.findAll();
+           student = repository.findAll(pageable);
         }
-        return student.stream().map(StudentMapper::toStudentResponse).toList();
+        return student.map(StudentMapper::toStudentResponse);
     }
+
+
+
 
 /**
     public void addStudentAndUpdateGrade(Student student, int grade) {
