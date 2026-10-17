@@ -91,4 +91,9 @@ public class StudentController {
         Page<StudentResponse> studentResponses = studentService.filterStudentsPaginated(name, departmentId, pageable);
         return ResponseEntity.ok(studentResponses);
     }
+    @GetMapping("/grade/{firstGrade}/{secondGrade}")
+    public ResponseEntity<Page<StudentResponse>> getAllStudentWithGrade(@PathVariable Integer firstGrade, @PathVariable Integer secondGrade, Pageable pageable){
+        Page<StudentResponse> studentsBtwGrade = studentService.findByGradeBetween(firstGrade, secondGrade, pageable);
+        return ResponseEntity.ok(studentsBtwGrade);
+    }
 }

@@ -132,7 +132,6 @@ public class StudentService {
                                 .orElseThrow(() -> new ProgramNotFoundException("The program with id " + id + " cannot be found" ))).toList();
         Student student = repository.findById(studentId).orElseThrow(() -> new StudentNotFoundException("student with " + studentId + " can not be found"));
         student.setPrograms(programs);
-        List<ProgramResponse> listProgramConv = programs.stream().map(ProgramMapper::toProgramResponse).toList();
 
         return StudentMapper.toStudentResponse(student);
 
@@ -175,6 +174,10 @@ public class StudentService {
     }
 
 
+    public Page<StudentResponse> findByGradeBetween(Integer grade1, Integer grade2, Pageable pageable){
+        Page<Student> students = repository.findByGradeBetween(grade1, grade2, pageable);
+        return students.map(StudentMapper::toStudentResponse);
+    }
 
 
 /**

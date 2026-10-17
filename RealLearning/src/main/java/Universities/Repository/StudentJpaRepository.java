@@ -16,5 +16,6 @@ public interface StudentJpaRepository extends JpaRepository<Student, Long> {
     Page<Student>  findByNameAndDepartment(String name, Department department, Pageable pageable);
     Page<Student>  findByName(String name, Pageable pageable);
     Page<Student>  findByDepartment(Department department, Pageable pageable);
+    Page<Student> findByGradeBetween (Integer grade1, Integer grade2, Pageable pageable);
 
 }
