@@ -179,9 +179,34 @@ public class StudentService {
         return students.map(StudentMapper::toStudentResponse);
     }
 
+    public Page<StudentResponse> findByGradeGreaterThanEqual(Integer grade, Pageable pageable){
+        Page<Student> students = repository.findByGradeGreaterThanEqual(grade, pageable);
+        return students.map(StudentMapper::toStudentResponse);
+
+    }
+
+    public Page<StudentResponse> findByGradeLessThanEqual(Integer grade, Pageable pageable){
+        Page<Student> students = repository.findByGradeLessThanEqual(grade, pageable);
+        return students.map(StudentMapper::toStudentResponse);
+    }
+
+    public Page<StudentResponse> findByGradeIn(List<Integer> listOfGrade, Pageable pageable){
+        Page<Student> students = repository.findByGradeIn(listOfGrade, pageable);
+        return students.map(StudentMapper::toStudentResponse);
+    }
+
+    public Page<StudentResponse> findByGradeGreaterAndAgeLess(Integer grade, Integer age, Pageable pageable){
+        Page<Student> students = repository.findByGradeGreaterThanEqualAndAgeLessThanEqual(grade, age, pageable);
+        return students.map(StudentMapper::toStudentResponse);
+    }
+
+    public Page<StudentResponse> findByGradeGreaterThanEqualOrAgeLessThanEqual(Integer grade, Integer age, Pageable pageable){
+        Page<Student> students = repository.findByGradeGreaterThanEqualOrAgeLessThanEqual(grade, age, pageable);
+        return students.map(StudentMapper::toStudentResponse);
+    }
 
 /**
-    public void addStudentAndUpdateGrade(Student student, int grade) {
+    pu[blic void addStudentAndUpdateGrade(Student student, int grade) {
 
         try (Connection con = DatabaseConnection.getConnection()){
 
