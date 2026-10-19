@@ -1,6 +1,7 @@
 package Universities.Repository;
 
 import Universities.DTO.CourseStudentCountDTO;
+import Universities.DTO.StudentAndDepartmentNameDTO;
 import Universities.Entity.Department;
 import Universities.Entity.Student;
 import org.springframework.data.domain.Page;
@@ -45,4 +46,7 @@ public interface StudentJpaRepository extends JpaRepository<Student, Long> {
 
     @Query("Select s from Student s Left Join s.department d")
     List<Student> studentDepartmentRelationship(@Param("departmentName") String departmentName);
+
+    @Query("Select new Universities.DTO.StudentAndDepartmentNameDTO(s.name, d.name)  from Student s Left Join s.department d")
+     List<StudentAndDepartmentNameDTO> studentAndDepartmentName();
 }
