@@ -1,10 +1,7 @@
 package Universities.Service;
 
 
-import Universities.DTO.ProgramResponse;
-import Universities.DTO.StudentPatchRequest;
-import Universities.DTO.StudentRequest;
-import Universities.DTO.StudentResponse;
+import Universities.DTO.*;
 import Universities.Entity.Department;
 import Universities.Entity.Program;
 import Universities.Entity.Student;
@@ -203,6 +200,10 @@ public class StudentService {
     public Page<StudentResponse> findByGradeGreaterThanEqualOrAgeLessThanEqual(Integer grade, Integer age, Pageable pageable){
         Page<Student> students = repository.findByGradeGreaterThanEqualOrAgeLessThanEqual(grade, age, pageable);
         return students.map(StudentMapper::toStudentResponse);
+    }
+
+    public List<CourseStudentCountDTO> numberOfStudentPerCourse(){
+        return repository.numberOfStudentPerCourse();
     }
 
 /**

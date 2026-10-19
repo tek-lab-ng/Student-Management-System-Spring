@@ -1,10 +1,13 @@
 package Universities.Repository;
 
+import Universities.DTO.CourseStudentCountDTO;
 import Universities.Entity.Department;
 import Universities.Entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -25,6 +28,21 @@ public interface StudentJpaRepository extends JpaRepository<Student, Long> {
     List<Student> findTop3ByOrderByGradeDesc();
     List<Student> findTop3ByOrderByGradeAsc();
     Student findFirstByOrderByGradeDesc();
+    @Query("Select Avg(s.grade) from Student s")
+    Double allStudentAverage();
+    @Query("Select Avg(s.grade) from Student s where s.course = :course")
+    Double allStudentAverageByCourse(@Param("course") String course);
+    @Query("Select Count(s) from Student s Where s.course = :course")
+    Long numberOfStudentOnACourse(@Param("course") String course);
+    @Query("Select new Universities.DTO.CourseStudentCountDTO(s.course, Count(s)) From Student s Group By s.course")
+    List<CourseStudentCountDTO> numberOfStudentPerCourse ();
 
+    @Query("Select new Universities.DTO.CourseStudentCountDTO(s.course, Count(s)) from Student s Group By s.course Having Count(s) > :value ")
+    List<CourseStudentCountDTO> numberOfStudentPerCourse(@Param("value") Long value);
 
+    @Query("Select new Universities.DTO.CourseStudentCountDTO(s.course, Count(s)) from Student s Group By s.course Order By Count(s) Desc")
+    List<CourseStudentCountDTO> numberOfStudentPerCourseOrder();
+
+    @Query("Select s from Student s Left Join s.department d")
+    List<Student> studentDepartmentRelationship(@Param("departmentName") String departmentName);
 }

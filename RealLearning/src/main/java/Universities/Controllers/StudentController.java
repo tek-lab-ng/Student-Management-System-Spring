@@ -96,4 +96,8 @@ public class StudentController {
         Page<StudentResponse> studentsBtwGrade = studentService.findByGradeBetween(firstGrade, secondGrade, pageable);
         return ResponseEntity.ok(studentsBtwGrade);
     }
+    @GetMapping("/course/total/number")
+    public ResponseEntity<List<CourseStudentCountDTO>> numberOfStudentPerCourse(){
+        return ResponseEntity.ok(studentService.numberOfStudentPerCourse());
+    }
 }
