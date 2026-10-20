@@ -1,6 +1,7 @@
 package Universities.Repository;
 
 import Universities.DTO.CourseStudentCountDTO;
+import Universities.DTO.DepartmentStudentCountDTO;
 import Universities.DTO.StudentAndDepartmentNameDTO;
 import Universities.Entity.Department;
 import Universities.Entity.Student;
@@ -44,9 +45,14 @@ public interface StudentJpaRepository extends JpaRepository<Student, Long> {
     @Query("Select new Universities.DTO.CourseStudentCountDTO(s.course, Count(s)) from Student s Group By s.course Order By Count(s) Desc")
     List<CourseStudentCountDTO> numberOfStudentPerCourseOrder();
 
-    @Query("Select s from Student s Left Join s.department d")
+    @Query("Select s from Student s Left Join s.department d where d.name = :departmentName")
     List<Student> studentDepartmentRelationship(@Param("departmentName") String departmentName);
 
     @Query("Select new Universities.DTO.StudentAndDepartmentNameDTO(s.name, d.name)  from Student s Left Join s.department d")
      List<StudentAndDepartmentNameDTO> studentAndDepartmentName();
+    @Query("Select new Universities.DTO.DepartmentStudentCountDTO(d.name, Count(s) ) from Student s Left Join s.department d Group By d.name")
+    List<DepartmentStudentCountDTO> DepartmentAndStudentCount ();
+
+    @Query("Select new Universities.DTO.DepartmentStudentCountDTO(d.name, Count(s)) From Student s Left Join s.department d Group By d.name Having Count(s) >= :value Order By Count(s) Desc")
+    List<DepartmentStudentCountDTO> getDepartmentAndNumberOfStudent(@Param("value") Long value);
 }
