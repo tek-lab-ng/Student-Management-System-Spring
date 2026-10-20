@@ -55,4 +55,8 @@ public interface StudentJpaRepository extends JpaRepository<Student, Long> {
 
     @Query("Select new Universities.DTO.DepartmentStudentCountDTO(d.name, Count(s)) From Student s Left Join s.department d Group By d.name Having Count(s) >= :value Order By Count(s) Desc")
     List<DepartmentStudentCountDTO> getDepartmentAndNumberOfStudent(@Param("value") Long value);
+
+    //SubQueries
+    @Query("Select s from Student s Where s.grade >= (Select Avg(s.grade) from Student s)")
+    List<Student> getListOfStudentGradeGreaterThanOrEqualAverage();
 }
