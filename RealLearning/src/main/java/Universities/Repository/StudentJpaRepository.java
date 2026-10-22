@@ -66,9 +66,5 @@ public interface StudentJpaRepository extends JpaRepository<Student, Long> {
     @Query("Select s From Student s Where s.grade > (Select Avg(st) From Student st Where st.department = s.department")
     List<Student> getStudentsWithGradeAboveDepartmentAverage();
 
-    @Query("Select d from Department d Where Exists (Select s From Student s Where s.department = d")
-    List<Department> getAllDepartmentWithEachHasAStudent();
 
-    @Query("Select d From Department d Where Not Exists (Select s From Student s Where s.department = d")
-    List<Department> getAllDepartmentWithEachHasNoStudent();
 }
