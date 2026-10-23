@@ -8,8 +8,10 @@ import Universities.Entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -71,5 +73,29 @@ public interface StudentJpaRepository extends JpaRepository<Student, Long> {
 
     @Query("Select s from Student s Where s.grade > ANY (Select st.grade From Student st Where st.department.name = :department)")
     List<Student> getStudentsWithGradeHigherThanANYMathStudents(@Param("department") String department);
+
+    @Query("""
+              SELECT s.name,
+                       s.age,
+                       CASE
+                           WHEN s.age >= 18 THEN 'Adult'
+                           ELSE 'Minor'
+                       END
+                FROM Student s
+  
+    """)
+    List<Object[]> getStudentAgeCategories();
+
+    @Transactional
+    @Modifying
+    @Query("""
+    UPDATE Student s
+    SET s.grade = s.grade + :point
+    WHERE s.course = :course
+    AND s.grade + :point <= 100
+    """)
+    int updateStudentGrade(
+            @Param("point") Integer point,
+            @Param("course") String course);
 
 }
