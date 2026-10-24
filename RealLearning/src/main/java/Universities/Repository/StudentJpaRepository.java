@@ -94,8 +94,20 @@ public interface StudentJpaRepository extends JpaRepository<Student, Long> {
     WHERE s.course = :course
     AND s.grade + :point <= 100
     """)
-    int updateStudentGrade(
-            @Param("point") Integer point,
-            @Param("course") String course);
+    int updateStudentGrade(@Param("point") Integer point, @Param("course") String course);
 
+    @Query("SELECT DISTINCT s.course FROM Student s ")
+    List<String> getUniqueCourseNames();
+
+    @Query("SELECT s FROM Student s WHERE s.email IS NULL")
+    List<Student>  getStudentsWithEmail();
+
+    @Query("Select s From Student s Where s.name Like Concat('%',:value, '%')")
+    List<Student> getStudentsWhoseNamesContain(@Param("value") String value);
+
+    @Query("Select s From Student s Where s.grade Between :minGrade And :maxGrade")
+    List<Student> getGradeBetween (@Param("minGrade") Integer minGrade, @Param("maxGrade") Integer maxGrade);
+
+    @Query(value = "Select * From student Where grade >= :grade", nativeQuery = true)
+    List<Student> getAllStudentOfAGrade (@Param("grade") Integer grade);
 }
