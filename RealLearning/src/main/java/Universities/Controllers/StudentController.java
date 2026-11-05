@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -99,5 +100,9 @@ public class StudentController {
     @GetMapping("/course/total/number")
     public ResponseEntity<List<CourseStudentCountDTO>> numberOfStudentPerCourse(){
         return ResponseEntity.ok(studentService.numberOfStudentPerCourse());
+    }
+    @GetMapping("/csrf")
+    public CsrfToken getCsrfToken(CsrfToken csrfToken) {
+        return csrfToken;
     }
 }

@@ -65,7 +65,7 @@ public interface StudentJpaRepository extends JpaRepository<Student, Long> {
     @Query("Select s From Student s Where s.department IN (Select st.department From Student st Where st.grade >= :value) ")
     List<Student> getAllStudentInCourseAndHasGrade(@Param("value") Long value);
 
-    @Query("Select s From Student s Where s.grade > (Select Avg(st) From Student st Where st.department = s.department")
+    @Query("Select s From Student s Where s.grade > (Select Avg(st.grade) From Student st Where st.department = s.department)")
     List<Student> getStudentsWithGradeAboveDepartmentAverage();
 
     @Query("Select s from Student s Where s.grade > ALL (Select st.grade From Student st Where st.department.name = :department)")
@@ -110,4 +110,5 @@ public interface StudentJpaRepository extends JpaRepository<Student, Long> {
 
     @Query(value = "Select * From student Where grade >= :grade", nativeQuery = true)
     List<Student> getAllStudentOfAGrade (@Param("grade") Integer grade);
+
 }

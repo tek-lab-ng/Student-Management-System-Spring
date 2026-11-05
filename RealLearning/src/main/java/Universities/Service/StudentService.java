@@ -203,6 +203,12 @@ public class StudentService {
         return repository.numberOfStudentPerCourse();
     }
 
+    @Transactional
+    public void saveStudentWithDepartment(Student student, Department department){
+        Department departmentStudent = departmentRepository.save(department);
+        student.setDepartment(departmentStudent);
+        repository.save(student);
+    }
 /**
     pu[blic void addStudentAndUpdateGrade(Student student, int grade) {
 
