@@ -22,7 +22,7 @@ public class SecurityConfig {
         httpSecurity    .csrf(csrf -> csrf.disable())
                         .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/user").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/students/{id}").hasRole("ADMIN")
+                        //.requestMatchers(HttpMethod.DELETE, "/students/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated())
                         .httpBasic(Customizer.withDefaults());
         return httpSecurity.build();
